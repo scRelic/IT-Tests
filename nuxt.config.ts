@@ -16,5 +16,6 @@ export default defineNuxtConfig({
       include: ['types/**/*.d.ts'],
     },
   },
+  ssr: true,
 
 })
