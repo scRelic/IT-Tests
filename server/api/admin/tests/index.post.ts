@@ -1,4 +1,4 @@
-import db from "../../../../utils/db";
+import db from "../../../utils/db";
 
 type OptionInput = {
     id?: number;
@@ -7,7 +7,7 @@ type OptionInput = {
 };
 
 type QuestionInput = {
-    id: number;
+    id?: number;
     question_text: string;
     answers: OptionInput[];
     correct_answer_id: number | null;
@@ -28,13 +28,6 @@ const asPositiveIntOrNull = (value: unknown): number | null => {
 };
 
 export default defineEventHandler(async (event) => {
-    const idParam = getRouterParam(event, "id");
-    const testId = Number(idParam);
-
-    if (!Number.isInteger(testId) || testId <= 0) {
-        throw createError({ statusCode: 400, message: "Invalid test id" });
-    }
-
     const body = await readBody<BodyInput>(event);
 
     if (!body || typeof body !== "object") {
@@ -61,10 +54,6 @@ export default defineEventHandler(async (event) => {
     for (const q of questions) {
         if (!q || typeof q !== "object") {
             throw createError({ statusCode: 400, message: "Invalid questions" });
-        }
-
-        if (!Number.isInteger(q.id)) {
-            throw createError({ statusCode: 400, message: "Invalid question id" });
         }
 
         if (!isNonEmptyString(q.question_text)) {
@@ -101,7 +90,7 @@ export default defineEventHandler(async (event) => {
         const allowed = new Set(
             q.answers
                 .map((a) => asPositiveIntOrNull((a as any).answer_id) ?? asPositiveIntOrNull((a as any).id))
-                .filter((v): v is number => v !== null)
+                .filter((v): v is number => v !== null),
         );
         if (!allowed.has(q.correct_answer_id)) {
             throw createError({ statusCode: 400, message: "correct_answer_id must match one of answers.answer_id" });
@@ -113,77 +102,39 @@ export default defineEventHandler(async (event) => {
     try {
         await client.query("BEGIN");
 
-        const updatedTest = await client.query(
-            `UPDATE tests
-       SET title = $1,
-           description = $2,
-           category_id = $3
-       WHERE id = $4
+        const createdTest = await client.query(
+            `INSERT INTO tests (title, description, category_id)
+       VALUES ($1, $2, $3)
        RETURNING id;`,
-            [title.trim(), description, categoryId, testId]
+            [title.trim(), description, categoryId],
         );
 
-        if (updatedTest.rowCount === 0) {
-            throw createError({ statusCode: 404, message: "Test not found" });
+        if (createdTest.rowCount === 0) {
+            throw createError({ statusCode: 500, message: "Failed to create test" });
         }
 
-        const existingQuestionsRes = await client.query<{ id: number }>(
-            "SELECT id FROM questions WHERE test_id = $1",
-            [testId]
-        );
-
-        const incomingExistingIds = new Set(
-            questions
-                .map((q) => asPositiveIntOrNull(q.id))
-                .filter((id): id is number => id !== null)
-        );
-
-        const toDeleteIds = existingQuestionsRes.rows
-            .map((row) => Number(row.id))
-            .filter((id) => !incomingExistingIds.has(id));
-
-        if (toDeleteIds.length > 0) {
-            await client.query(
-                "DELETE FROM questions WHERE test_id = $1 AND id = ANY($2::int[])",
-                [testId, toDeleteIds]
-            );
-        }
+        const testId = Number(createdTest.rows[0].id);
 
         for (const q of questions) {
             const normalizedAnswers = q.answers.map((a, idx) => {
-                const normalizedAnswerId = asPositiveIntOrNull((a as any).answer_id) ?? asPositiveIntOrNull((a as any).id) ?? (idx + 1);
+                const normalizedAnswerId =
+                    asPositiveIntOrNull((a as any).answer_id) ?? asPositiveIntOrNull((a as any).id) ?? idx + 1;
                 return {
                     answer_id: normalizedAnswerId,
                     text: String((a as any).text ?? "").trim(),
                 };
             });
 
-            if (asPositiveIntOrNull(q.id) !== null) {
-                const updatedQuestion = await client.query(
-                    `UPDATE questions
-         SET question_text = $1,
-             answers = $2::jsonb,
-             correct_answer_id = $3
-         WHERE id = $4 AND test_id = $5
-         RETURNING id;`,
-                    [q.question_text.trim(), JSON.stringify(normalizedAnswers), q.correct_answer_id, q.id, testId]
-                );
-
-                if (updatedQuestion.rowCount === 0) {
-                    throw createError({ statusCode: 400, message: `Question ${q.id} not found for this test` });
-                }
-            } else {
-                await client.query(
-                    `INSERT INTO questions (test_id, question_text, answers, correct_answer_id)
+            await client.query(
+                `INSERT INTO questions (test_id, question_text, answers, correct_answer_id)
          VALUES ($1, $2, $3::jsonb, $4);`,
-                    [testId, q.question_text.trim(), JSON.stringify(normalizedAnswers), q.correct_answer_id]
-                );
-            }
+                [testId, q.question_text.trim(), JSON.stringify(normalizedAnswers), q.correct_answer_id],
+            );
         }
 
         await client.query("COMMIT");
 
-        return { message: "Test updated successfully" };
+        return { message: "Test created successfully", id: testId };
     } catch (err: any) {
         await client.query("ROLLBACK");
 
@@ -191,7 +142,7 @@ export default defineEventHandler(async (event) => {
             throw err;
         }
 
-        console.error("Error updating test:", err);
+        console.error("Error creating test:", err);
         throw createError({ statusCode: 500, message: "Internal Server Error" });
     } finally {
         client.release();

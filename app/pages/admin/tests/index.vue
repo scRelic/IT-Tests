@@ -122,10 +122,11 @@ watch(categoryFilter, () => {
         </div>
         <div class="flex flex-wrap gap-2">
           <button class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">Export</button>
-          <button
-            class="rounded-xl px-4 py-2 text-sm font-semibold bg-gradient-to-r from-[#6C7CFF] to-[#8A95FF] hover:shadow-[0_0_18px_4px_rgba(108,124,255,0.3)] transition">
+          <NuxtLink
+            to="/admin/tests/create"
+            class="rounded-xl px-4 py-2 text-sm font-semibold bg-gradient-to-r from-[#6C7CFF] to-[#8A95FF] hover:shadow-[0_0_18px_4px_rgba(108,124,255,0.3)] transition flex items-center justify-center">
             + New test
-          </button>
+          </NuxtLink>
         </div>
       </div>
 

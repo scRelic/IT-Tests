@@ -18,7 +18,6 @@ type CategoryRow = {
   title: string;
   description: string;
   technologies?: string[] | null;
-  status?: "active" | "hidden";
 };
 
 type CategoryResponse = {
@@ -31,7 +30,6 @@ const { push } = useToast();
 
 const title = ref("");
 const description = ref("");
-const status = ref<"active" | "hidden">("active");
 const technologies = ref<string[]>([]);
 const technologyInput = ref("");
 
@@ -72,14 +70,12 @@ const updateCategory = async () => {
       body: {
         title: title.value,
         description: description.value,
-        status: status.value,
         technologies: technologies.value,
       },
     });
 
     title.value = "";
     description.value = "";
-    status.value = "active";
     technologies.value = [];
     technologyInput.value = "";
 
@@ -123,7 +119,6 @@ watchEffect(() => {
 
   title.value = c.title ?? "";
   description.value = c.description ?? "";
-  if (c.status) status.value = c.status;
   technologies.value = c.technologies ?? [];
 });
 </script>
@@ -174,36 +169,6 @@ watchEffect(() => {
                 <span v-else>Short and searchable description.</span>
               </div>
               <span>{{ description?.length ?? 0 }}/180</span>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="text-sm text-[#9AA3C7]">Visibility</label>
-              <div class="mt-2 grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  @click="status = 'active'"
-                  :class="
-                    status === 'active'
-                      ? 'border-[#6C7CFF] bg-[#6C7CFF]/15 text-white'
-                      : 'border-[#262C45] bg-white/5 text-[#9AA3C7] hover:bg-white/10 hover:text-white hover:border-[#6C7CFF]/40'
-                  "
-                  class="h-11 rounded-xl border px-3 text-sm transition">
-                  Active
-                </button>
-                <button
-                  type="button"
-                  @click="status = 'hidden'"
-                  :class="
-                    status === 'hidden'
-                      ? 'border-rose-500/40 bg-rose-500/10 text-rose-200'
-                      : 'border-[#262C45] bg-white/5 text-[#9AA3C7] hover:bg-white/10 hover:text-white hover:border-[#6C7CFF]/40'
-                  "
-                  class="h-11 rounded-xl border px-3 text-sm transition">
-                  Hidden
-                </button>
-              </div>
-              <p class="mt-2 text-xs text-[#9AA3C7]">Hidden categories are not visible to users.</p>
             </div>
           </div>
 

@@ -1,23 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import type { Option, Question } from "~~/shared/types/test";
+import { computed, ref } from "vue";
+import type { Option } from "~~/shared/types/test";
 import type { Category } from "~~/shared/types/category";
-
-type TestResponse = {
-  test: {
-    id: number;
-    title: string;
-    description: string;
-    category: string | null;
-    category_id: number | null;
-  };
-  questions: Array<
-    Omit<Question, "answers"> & {
-      answers: Option[];
-      correct_answer_id: number | null;
-    }
-  >;
-};
 
 type CategoriesResponse = {
   categories: Category[];
@@ -31,19 +15,11 @@ definePageMeta({
   middleware: ["auth"],
 });
 
-const route = useRoute();
 const router = useRouter();
-
 const { push } = useToast();
 
-const testId = computed(() => String(route.params.id ?? ""));
-
-const { data, pending, error, refresh } = await useFetch<TestResponse>(`/api/admin/tests/${route.params.id}`, {
-  key: `admin-test-${route.params.id}`,
-});
-
-const { data: categoriesData } = await useFetch<CategoriesResponse>("/api/admin/categories", {
-  key: "admin-categories-for-tests",
+const { data: categoriesData, pending: categoriesPending } = await useFetch<CategoriesResponse>("/api/admin/categories", {
+  key: "admin-categories-for-tests-create",
   query: { page: 1, limit: 100 },
 });
 
@@ -51,37 +27,6 @@ const categoryOptions = computed(() => {
   const categories = categoriesData.value?.categories ?? [];
   return categories.map((c) => ({ label: c.title, value: String(c.id) }));
 });
-
-const isInitialized = ref(false);
-
-const normalizeAnswers = (answers: unknown) => {
-  const list = Array.isArray(answers) ? answers : [];
-  return list
-    .map((a: any, idx: number) => {
-      const fromAnswerId = Number.isInteger(Number(a?.answer_id)) ? Number(a.answer_id) : null;
-      const fromId = Number.isInteger(Number(a?.id)) ? Number(a.id) : null;
-      const normalized = (fromAnswerId && fromAnswerId > 0 ? fromAnswerId : null) ?? (fromId && fromId > 0 ? fromId : null) ?? idx + 1;
-
-      return {
-        ...a,
-        answer_id: normalized,
-        text: typeof a?.text === "string" ? a.text : "",
-      } as Option;
-    })
-    .filter((a: any) => Number.isInteger(Number(a?.answer_id)) && Number(a.answer_id) > 0);
-};
-
-const form = ref<{
-  title: string;
-  description: string;
-  categoryId: string;
-  questions: Array<{
-    id: number;
-    question_text: string;
-    answers: Option[];
-    correct_answer_id: number | null;
-  }>;
-} | null>(null);
 
 const createEmptyQuestion = (): {
   id: number;
@@ -103,27 +48,39 @@ const createEmptyQuestion = (): {
   };
 };
 
-watch(
-  data,
-  (value) => {
-    if (!value || isInitialized.value) return;
+const form = ref<{
+  title: string;
+  description: string;
+  categoryId: string;
+  questions: Array<{
+    id: number;
+    question_text: string;
+    answers: Option[];
+    correct_answer_id: number | null;
+  }>;
+}>({
+  title: "",
+  description: "",
+  categoryId: "",
+  questions: [createEmptyQuestion()],
+});
 
-    form.value = {
-      title: value.test.title ?? "",
-      description: value.test.description ?? "",
-      categoryId: value.test.category_id ? String(value.test.category_id) : "",
-      questions: (value.questions ?? []).map((q) => ({
-        id: q.id,
-        question_text: q.question_text ?? "",
-        answers: normalizeAnswers(q.answers),
-        correct_answer_id: q.correct_answer_id ?? null,
-      })),
-    };
+const normalizeAnswers = (answers: unknown) => {
+  const list = Array.isArray(answers) ? answers : [];
+  return list
+    .map((a: any, idx: number) => {
+      const fromAnswerId = Number.isInteger(Number(a?.answer_id)) ? Number(a.answer_id) : null;
+      const fromId = Number.isInteger(Number(a?.id)) ? Number(a.id) : null;
+      const normalized = (fromAnswerId && fromAnswerId > 0 ? fromAnswerId : null) ?? (fromId && fromId > 0 ? fromId : null) ?? idx + 1;
 
-    isInitialized.value = true;
-  },
-  { immediate: true },
-);
+      return {
+        ...a,
+        answer_id: normalized,
+        text: typeof a?.text === "string" ? a.text : "",
+      } as Option;
+    })
+    .filter((a: any) => Number.isInteger(Number(a?.answer_id)) && Number(a.answer_id) > 0);
+};
 
 const saving = ref(false);
 
@@ -131,11 +88,14 @@ const isFormValid = computed(() => {
   if (!form.value) return false;
   if (!form.value.questions || form.value.questions.length === 0) return false;
 
+  if (!form.value.title.trim()) return false;
+
   for (const q of form.value.questions) {
     if (!q.question_text.trim()) return false;
     if (!Array.isArray(q.answers) || q.answers.length < 2) return false;
 
     const allowedIds = new Set(q.answers.map((a) => Number(a.answer_id ?? a.id ?? 0)).filter((n) => Number.isFinite(n) && n > 0));
+
     if (q.correct_answer_id == null) return false;
 
     const correctId = q.correct_answer_id;
@@ -198,14 +158,13 @@ const save = async () => {
   try {
     saving.value = true;
 
-    await $fetch(`/api/admin/tests/${route.params.id}`, {
-      method: "PUT",
+    await $fetch("/api/admin/tests", {
+      method: "POST",
       body: {
         title: form.value.title,
         description: form.value.description,
         category_id: form.value.categoryId ? Number(form.value.categoryId) : null,
         questions: form.value.questions.map((q) => ({
-          id: q.id,
           question_text: q.question_text,
           answers: q.answers,
           correct_answer_id: q.correct_answer_id,
@@ -213,14 +172,10 @@ const save = async () => {
       },
     });
 
-    push({ title: "Success", description: "Test updated successfully", variant: "success", duration: 4000 });
-    await refresh();
-
-    isInitialized.value = false;
-
+    push({ title: "Success", description: "Test created successfully", variant: "success", duration: 4000 });
     router.push("/admin/tests");
   } catch (e) {
-    push({ title: "Error", description: "Failed to update test", variant: "error", duration: 4000 });
+    push({ title: "Error", description: "Failed to create test", variant: "error", duration: 4000 });
   } finally {
     saving.value = false;
   }
@@ -230,29 +185,27 @@ const save = async () => {
 <template>
   <section class="p-6 lg:p-10">
     <div class="max-w-5xl mx-auto space-y-6">
-      <div v-if="pending" class="px-2 py-10 text-center text-sm text-[#9AA3C7]">Loading test…</div>
-      <div v-else-if="error" class="px-2 py-10 text-center text-sm text-rose-200">Failed to load test.</div>
-      <div v-else-if="!data" class="px-2 py-10 text-center text-sm text-[#9AA3C7]">Test not found.</div>
+      <div v-if="categoriesPending" class="px-2 py-10 text-center text-sm text-[#9AA3C7]">Loading categories…</div>
 
-      <template v-else>
-        <div class="flex items-start justify-between gap-4">
+      <div v-else>
+        <div class="flex items-start justify-between gap-4 mb-4">
           <div>
-            <h1 class="text-2xl font-semibold">Edit test</h1>
-            <p class="mt-1 text-sm text-[#9AA3C7]">ID: {{ testId }}</p>
+            <h1 class="text-2xl font-semibold">Create test</h1>
+            <p class="mt-1 text-sm text-[#9AA3C7]">Fill in details and questions for the new test.</p>
           </div>
           <div class="flex gap-2">
             <button
               type="button"
               class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition disabled:opacity-60"
-              :disabled="saving || pending || !form || !isFormValid"
+              :disabled="saving || !form || !isFormValid"
               @click="save">
-              {{ saving ? "Saving…" : "Save" }}
+              {{ saving ? "Saving…" : "Create" }}
             </button>
           </div>
         </div>
 
         <div v-if="form" class="rounded-2xl border border-[#262C45] bg-[#1B2033] p-4 space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
             <label class="space-y-1">
               <span class="text-xs text-[#9AA3C7]">Title</span>
               <input
@@ -261,7 +214,7 @@ const save = async () => {
                 placeholder="Test title" />
             </label>
 
-            <label class="space-y-1">
+            <label class="space-y-1 inline-block">
               <span class="text-xs text-[#9AA3C7]">Category</span>
               <AppSelect v-model="form.categoryId" :options="categoryOptions" placeholder="Select category" />
             </label>
@@ -277,20 +230,19 @@ const save = async () => {
           </label>
 
           <div class="flex flex-wrap gap-2">
-            <span class="text-xs px-3 py-1 rounded-full bg-white/5 border border-[#262C45]">{{ data.test.category ?? "—" }}</span>
             <span class="text-xs px-3 py-1 rounded-full bg-white/5 border border-[#262C45]">{{ form.questions.length }} questions</span>
           </div>
         </div>
 
-        <section v-if="form" class="space-y-4">
-          <div v-for="(q, qIdx) in form.questions" :key="q.id" class="rounded-2xl border border-[#262C45] bg-[#1B2033] p-4 space-y-3">
+        <section v-if="form" class="space-y-4 mt-4">
+          <div v-for="(q, qIdx) in form.questions" :key="qIdx" class="rounded-2xl border border-[#262C45] bg-[#1B2033] p-4 space-y-3">
             <div class="flex items-start justify-between gap-3">
-              <p class="text-xs text-[#9AA3C7]">Question #{{ qIdx + 1 }} (id {{ q.id || "new" }})</p>
+              <p class="text-xs text-[#9AA3C7]">Question #{{ qIdx + 1 }}</p>
 
               <button
                 type="button"
                 class="text-[11px] px-2 py-1 rounded-lg border border-rose-500/40 text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 transition disabled:opacity-60"
-                :disabled="saving || pending"
+                :disabled="saving || form.questions.length <= 1"
                 @click="removeQuestion(qIdx)">
                 Удалить вопрос
               </button>
@@ -313,7 +265,7 @@ const save = async () => {
                 class="flex items-center gap-2 rounded-xl border border-[#262C45] bg-white/5 px-3 py-2">
                 <input
                   type="radio"
-                  :name="`correct-${q.id}`"
+                  :name="`correct-new-${qIdx}`"
                   :value="a.answer_id"
                   :checked="q.correct_answer_id === a.answer_id"
                   @change="q.correct_answer_id = a.answer_id" />
@@ -322,7 +274,7 @@ const save = async () => {
                 <button
                   type="button"
                   class="text-[11px] px-2 py-1 rounded-lg border border-[#262C45] text-[#9AA3C7] hover:bg-white/10 transition disabled:opacity-40"
-                  :disabled="saving || pending || q.answers.length <= 1"
+                  :disabled="saving || q.answers.length <= 2"
                   @click="removeAnswer(qIdx, aIdx)">
                   Удалить
                 </button>
@@ -331,30 +283,31 @@ const save = async () => {
               <button
                 type="button"
                 class="mt-2 rounded-xl border border-[#262C45] bg-white/5 px-3 py-2 text-xs hover:bg-white/10 transition disabled:opacity-60"
-                :disabled="saving || pending"
+                :disabled="saving"
                 @click="addAnswer(qIdx)">
                 Add answer
               </button>
             </div>
           </div>
+
           <div class="flex justify-end mb-2 gap-2">
             <button
               type="button"
               class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition disabled:opacity-60"
-              :disabled="saving || pending || !form || !isFormValid"
+              :disabled="saving || !form || !isFormValid"
               @click="save">
-              {{ saving ? "Saving…" : "Save" }}
+              {{ saving ? "Saving…" : "Create" }}
             </button>
             <button
               type="button"
               class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition disabled:opacity-60"
-              :disabled="saving || pending"
+              :disabled="saving"
               @click="addQuestion">
               Add question
             </button>
           </div>
         </section>
-      </template>
+      </div>
     </div>
   </section>
 </template>

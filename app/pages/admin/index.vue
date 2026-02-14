@@ -13,26 +13,22 @@ type AdminDashboardData = {
   totalCategories: number;
 };
 
-const cardsStats = computed<Array<{ title: string; value: number; subtitle: string }>>(() => [
+const cardsStats = computed<Array<{ title: string; value: number }>>(() => [
   {
     title: "Total tests",
     value: adminData.value?.totalTests || 0,
-    subtitle: "+6 this week",
   },
   {
     title: "Questions",
     value: adminData.value?.totalQuestions || 0,
-    subtitle: "Avg 25 / test",
   },
   {
     title: "Users",
     value: adminData.value?.totalUsers || 0,
-    subtitle: "+1.2k in 30 days",
   },
   {
     title: "Categories",
     value: adminData.value?.totalCategories || 0,
-    subtitle: "Need review",
   },
 ]);
 
@@ -76,7 +72,6 @@ const {
         <div class="rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] p-5" v-for="card in cardsStats" :key="card.title">
           <p class="text-sm text-[#9AA3C7]">{{ card.title }}</p>
           <p class="mt-2 text-3xl font-semibold">{{ card.value }}</p>
-          <p class="mt-2 text-xs text-[#9AA3C7]">{{ card.subtitle }}</p>
         </div>
       </section>
     </template>
