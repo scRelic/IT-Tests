@@ -41,12 +41,7 @@ const loadMore = async () => {
   <main>
     <AppLoader v-if="pending" />
 
-    <div v-else-if="error" class="text-sm text-red-400 text-center border border-red-400 p-4 rounded-xl">
-      <span>Failed to load random tests.</span>
-      <button class="underline ml-2" @click="refresh()">Retry</button>
-    </div>
-
-    <section v-else-if="categories.length > 0" class="max-w-7xl mx-auto px-6 py-24">
+    <section v-else class="max-w-7xl mx-auto px-6 py-24">
       <div class="mb-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
         <div>
           <h2 class="text-3xl font-semibold mb-2">Areas of study</h2>
@@ -54,7 +49,7 @@ const loadMore = async () => {
         </div>
       </div>
 
-      <div class="space-y-6">
+      <div class="space-y-6" v-if="categories.length">
         <div
           v-for="(category, index) in categories"
           :key="category.id"
@@ -91,6 +86,13 @@ const loadMore = async () => {
         </div>
       </div>
 
+      <div v-if="error" class="text-sm text-red-400 text-center border border-red-400 p-4 rounded-xl">
+        <span>Failed to load random tests.</span>
+        <button class="underline ml-2" @click="refresh()">Retry</button>
+      </div>
+
+      <div v-else class="text-sm text-slate-500 text-center mt-10">No random tests yet.</div>
+
       <div v-if="hasMore" class="pt-12 flex justify-center">
         <button
           class="px-8 py-3 rounded-xl border border-[#262C45] text-[#9AA3C7] hover:text-white hover:border-[#6C7CFF] hover:bg-[#6C7CFF]/10 transition"
@@ -100,7 +102,5 @@ const loadMore = async () => {
         </button>
       </div>
     </section>
-
-    <div v-else class="text-sm text-[#9AA3C7] text-center py-20">No categories found.</div>
   </main>
 </template>
