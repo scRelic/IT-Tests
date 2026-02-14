@@ -17,6 +17,7 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
+
   auth: {
     session: {
       cookie: {
@@ -27,4 +28,15 @@ export default defineNuxtConfig({
     },
   },
 
+  runtimeConfig: {
+    auth: {
+      session: {
+        cookie: {
+          secure: false,
+          sameSite: 'lax',
+          httpOnly: true,
+        },
+      },
+    },
+  },
 })
