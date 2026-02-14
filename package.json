@@ -1,0 +1,36 @@
+{
+  "name": "it-tests",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/icon": "^2.2.0",
+    "@nuxt/image": "^2.0.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@pinia/nuxt": "^0.11.3",
+    "@vueuse/motion": "^3.0.3",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.3",
+    "nuxt": "^4.2.2",
+    "nuxt-auth-utils": "^0.5.27",
+    "pg": "^8.17.1",
+    "pinia": "^3.0.4",
+    "reka-ui": "^2.7.0",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4",
+    "yup": "^1.7.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@iconify-json/material-symbols": "^1.2.52",
+    "@iconify-json/mingcute": "^1.2.6",
+    "@iconify-json/radix-icons": "^1.2.6",
+    "@types/pg": "^8.16.0"
+  }
+}

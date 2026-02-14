@@ -1,0 +1,155 @@
+body {
+    background-color: #0b101d;
+    color: #FFFFFF;
+    font-family: 'Inter', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.btn {
+  padding: 6px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #6c7cff, #8a95ff);
+  color: white;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 0 0 rgba(108, 124, 255, 0);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.btn.secondary {
+  background: transparent;
+  border: 1px solid #262c45;
+  color: #e6e9f0;
+  box-shadow: none;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 24px 4px rgba(108, 124, 255, 0.4);
+}
+
+@keyframes lineGrow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.app-toast {
+  will-change: transform, opacity;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0) scale(0.98);
+  }
+}
+
+.app-toast[data-state="open"] {
+  animation: toastIn 220ms cubic-bezier(0.21, 1.02, 0.62, 1) both;
+}
+
+.app-toast[data-state="closed"] {
+  animation: toastOut 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-toast[data-state="open"],
+  .app-toast[data-state="closed"] {
+    animation: none;
+  }
+}
+
+.app-modal-overlay {
+  will-change: opacity;
+}
+
+@keyframes modalOverlayIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalOverlayOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.app-modal-card {
+  will-change: transform, opacity;
+}
+
+@keyframes modalContentIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes modalContentOut {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.985);
+  }
+}
+
+.app-modal-overlay[data-state="open"] {
+  animation: modalOverlayIn 180ms ease-out both;
+}
+
+.app-modal-overlay[data-state="closed"] {
+  animation: modalOverlayOut 140ms ease-in both;
+}
+
+.app-modal-shell[data-state="open"] .app-modal-card {
+  animation: modalContentIn 220ms cubic-bezier(0.21, 1.02, 0.62, 1) both;
+}
+
+.app-modal-shell[data-state="closed"] .app-modal-card {
+  animation: modalContentOut 180ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-modal-overlay[data-state="open"],
+  .app-modal-overlay[data-state="closed"],
+  .app-modal-shell[data-state="open"] .app-modal-card,
+  .app-modal-shell[data-state="closed"] .app-modal-card {
+    animation: none;
+  }
+}
