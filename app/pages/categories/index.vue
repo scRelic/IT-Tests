@@ -4,7 +4,12 @@ import type { Category } from "~~/shared/types/category";
 
 const PAGE_SIZE = 6;
 
-const { data: initialCategories, pending } = await useFetch<Category[]>("/api/categories", {
+const {
+  data: initialCategories,
+  pending,
+  error,
+  refresh,
+} = await useFetch<Category[]>("/api/categories", {
   query: { limit: PAGE_SIZE, offset: 0 },
   default: () => [],
 });
@@ -35,7 +40,13 @@ const loadMore = async () => {
 <template>
   <main>
     <AppLoader v-if="pending" />
-    <section v-else class="max-w-7xl mx-auto px-6 py-24">
+
+    <div v-else-if="error" class="text-sm text-red-400 text-center border border-red-400 p-4 rounded-xl">
+      <span>Failed to load random tests.</span>
+      <button class="underline ml-2" @click="refresh()">Retry</button>
+    </div>
+
+    <section v-else-if="categories.length > 0" class="max-w-7xl mx-auto px-6 py-24">
       <div class="mb-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
         <div>
           <h2 class="text-3xl font-semibold mb-2">Areas of study</h2>
@@ -68,7 +79,7 @@ const loadMore = async () => {
           <div class="lg:col-span-6 flex flex-wrap gap-3">
             <span
               class="px-3 h-8 text-xs rounded-full bg-[#6C7CFF]/20 text-[#6C7CFF] flex justify-center items-center uppercase"
-              v-for="tag in category.technologies"
+              v-for="tag in category.technologies || []"
               :key="tag"
               >{{ tag }}</span
             >
@@ -89,5 +100,7 @@ const loadMore = async () => {
         </button>
       </div>
     </section>
+
+    <div v-else class="text-sm text-[#9AA3C7] text-center py-20">No categories found.</div>
   </main>
 </template>

@@ -17,26 +17,4 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
-
-  auth: {
-    session: {
-      cookie: {
-        secure: false,
-        sameSite: 'lax',
-        httpOnly: true,
-      },
-    },
-  },
-
-  runtimeConfig: {
-    auth: {
-      session: {
-        cookie: {
-          secure: false,
-          sameSite: 'lax',
-          httpOnly: true,
-        },
-      },
-    },
-  },
 })
