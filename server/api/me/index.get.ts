@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
   try {
     const session = await getUserSession(event) as { user: { id: number; name: string }; id: string };
 
-
     if (!session || !session.user) {
       throw createError({
         statusCode: 401,

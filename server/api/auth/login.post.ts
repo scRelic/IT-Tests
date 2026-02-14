@@ -31,9 +31,11 @@ export default defineEventHandler(async (event) => {
         message: 'Invalid email or password',
       });
     }
-    await setUserSession(event, { user: { id: user.id, name: user.name, role: user.role } });
 
-    return { message: 'Login successful' };
+    const sessionUser = { id: user.id, name: user.name, role: user.role };
+    await setUserSession(event, { user: sessionUser });
+
+    return { message: "Login successful", user: sessionUser };
   } catch (error: any) {
     if (error instanceof ZodError) {
       throw createError({
