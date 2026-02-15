@@ -10,8 +10,8 @@ definePageMeta({
 const { push } = useToast();
 
 const categorySchema = object({
-  title: string().trim().required().min(4).max(50),
-  description: string().trim().required().min(6).max(100),
+  title: string().trim().required().max(50),
+  description: string().trim().required().min(6).max(255),
   technologies: array().of(string().trim().min(1)).notRequired().nullable(),
 });
 
@@ -31,8 +31,8 @@ const onDescriptionInput = (e: Event) => {
   const el = e.target as HTMLTextAreaElement;
   if (!el) return;
 
-  if (el.value.length > 100) {
-    el.value = el.value.slice(0, 100);
+  if (el.value.length > 255) {
+    el.value = el.value.slice(0, 255);
   }
   description.value = el.value;
 };
@@ -153,7 +153,7 @@ const createCategory = async () => {
             <textarea
               v-model="description"
               :disabled="isLoading"
-              maxlength="100"
+              maxlength="255"
               @input="onDescriptionInput"
               rows="4"
               placeholder="UI, browser, frameworks and tooling."
@@ -164,7 +164,7 @@ const createCategory = async () => {
                 <span v-else>Short and searchable description.</span>
               </div>
 
-              <span>{{ description.length }}/100</span>
+              <span>{{ description.length }}/255</span>
             </div>
           </div>
 

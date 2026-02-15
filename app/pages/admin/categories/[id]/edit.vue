@@ -8,8 +8,8 @@ definePageMeta({
 });
 
 const categorySchema = object({
-  title: string().trim().required().min(2).max(44),
-  description: string().trim().required().max(180),
+  title: string().trim().required().max(44),
+  description: string().trim().required().max(255),
   technologies: array().of(string().trim().min(1)).notRequired().nullable(),
 });
 
@@ -168,7 +168,7 @@ watchEffect(() => {
                 <p v-if="formErrors.description" class="mt-1 text-xs text-rose-300">{{ formErrors.description }}</p>
                 <span v-else>Short and searchable description.</span>
               </div>
-              <span>{{ description?.length ?? 0 }}/180</span>
+              <span>{{ description?.length ?? 0 }}/255</span>
             </div>
           </div>
 
