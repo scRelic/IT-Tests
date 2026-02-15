@@ -16,7 +16,7 @@ defineProps<{
 
       <h3 class="text-[20px] font-semibold">{{ test.title }}</h3>
 
-      <p class="text-[#9AA3C7] text-[14px] leading-normal">
+      <p class="text-[#9AA3C7] text-[14px] leading-normal clamp-3">
         {{ test.description }}
       </p>
 
@@ -27,3 +27,12 @@ defineProps<{
     </div>
   </div>
 </template>
+
+<style scoped>
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
