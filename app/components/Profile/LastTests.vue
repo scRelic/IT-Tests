@@ -56,7 +56,7 @@ const visibleTests = computed(() => (allVisible.value ? props.tests : props.test
             : { opacity: 1, y: 0 }
         "
         class="bg-[#272B3D] rounded-xl px-4 py-3 mb-4">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center gap-4">
           <div>
             <h4 class="font-semibold text-white mb-1">{{ test.title }}</h4>
             <p class="text-[#9AA3C7] text-sm mb-1">{{ test.description }}</p>
@@ -64,7 +64,7 @@ const visibleTests = computed(() => (allVisible.value ? props.tests : props.test
           </div>
           <div class="flex gap-2 items-center">
             <span class="text-xs px-3 py-1 rounded-full bg-yellow-500/10 text-yellow-300 border border-yellow-500/25"> {{ test.category_title }}</span>
-            <span class="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/25">
+            <span class="text-xs px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/25 w-20 text-center">
               {{ Number(test.score) }} / {{ Number(test.total_questions) }}</span
             >
           </div>
