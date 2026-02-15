@@ -22,8 +22,9 @@ export default defineEventHandler(async (event) => {
   if (!allowed.includes(file.type || "")) throw createError({ statusCode: 400, message: "Invalid type" });
 
   const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
-  const filename = `${session.user.id}-${Date.now()}.${ext}`;
-  const dir = path.resolve("public", "uploads", "avatars");
+  const filename = `${userId}-${Date.now()}.${ext}`;
+  const dir = "/data/uploads/avatars";
+
   await fs.mkdir(dir, { recursive: true });
   await fs.writeFile(path.join(dir, filename), file.data);
 
@@ -31,4 +32,5 @@ export default defineEventHandler(async (event) => {
   await db.query("UPDATE users SET avatar_url = $1 WHERE id = $2", [url, userId]);
 
   return { avatar_url: url };
+
 });

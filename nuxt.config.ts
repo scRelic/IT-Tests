@@ -17,4 +17,9 @@ export default defineNuxtConfig({
     },
   },
   ssr: true,
+  nitro: {
+    publicAssets: [
+      { dir: '/data/uploads', baseURL: '/uploads' }
+    ]
+  }
 })
