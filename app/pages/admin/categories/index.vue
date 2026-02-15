@@ -48,6 +48,7 @@ const { data, pending, error, refresh } = await useFetch<AdminCategoriesResponse
 
 const { push } = useToast();
 const { downloadFile, pending: downloadPending } = useExport();
+const { toggleSidebar } = useSidebar();
 
 const categories = computed<AdminCategory[]>(() => data.value?.categories ?? []);
 
@@ -112,30 +113,29 @@ watch([sortBy, sortDir], () => {
 </script>
 
 <template>
-  <div class="px-6">
-    <div class="flex justify-between gap-4 my-6">
-      <div>
-        <h2 class="text-2xl font-semibold">Categories</h2>
-      </div>
-      <div class="flex items-center gap-2">
-        <button
-          :disabled="downloadPending"
-          @click="handleDownloadExcel"
-          class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">
-          {{ downloadPending ? "Exporting..." : "Export Excel" }}
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <section class="gap-6 px-6">
+  <section class="p-6">
     <div class="rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
       <div class="p-5 border-b border-[#262C45]">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div>
-            <p class="text-sm font-semibold">Latest categories</p>
-            <p class="text-xs text-[#9AA3C7] mt-1">Pick a category to edit. Search by name or tag.</p>
+          <div class="flex gap-4 items-center">
+            <button
+              type="button"
+              class="rounded-xl border border-[#262C45] bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+              aria-label="Toggle menu"
+              @click="toggleSidebar">
+              ☰
+            </button>
+            <div>
+              <p class="text-sm font-semibold">Latest categories</p>
+              <p class="text-xs text-[#9AA3C7] mt-1">Pick a category to edit. Search by name or tag.</p>
+            </div>
           </div>
+          <button
+            :disabled="downloadPending"
+            @click="handleDownloadExcel"
+            class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">
+            {{ downloadPending ? "Exporting..." : "Export Excel" }}
+          </button>
         </div>
 
         <div class="mt-4 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">

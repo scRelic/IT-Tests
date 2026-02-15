@@ -56,6 +56,7 @@ const { data, pending, refresh } = await useFetch("/api/admin/tests", {
 
 const { push } = useToast();
 const { downloadFile, pending: downloadPending } = useExport();
+const { toggleSidebar } = useSidebar();
 
 const tests = computed(() => data.value?.tests ?? []);
 const total = computed(() => Number(data.value?.total ?? 0));
@@ -123,12 +124,21 @@ watch(categoryFilter, () => {
 </script>
 
 <template>
-  <section class="p-6 lg:p-10 space-y-8">
+  <section class="p-6 space-y-8">
     <div class="xl:col-span-2 rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
       <div class="px-6 py-5 border-b border-[#262C45] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 class="text-lg font-semibold">Latest tests</h2>
-          <p class="mt-1 text-sm text-[#9AA3C7]">Edit, publish or archive tests.</p>
+        <div class="flex items-center gap-4">
+          <button
+            type="button"
+            class="rounded-xl border border-[#262C45] bg-white/5 px-3 py-2 text-sm hover:bg-white/10 transition"
+            aria-label="Toggle menu"
+            @click="toggleSidebar">
+            ☰
+          </button>
+          <div>
+            <h2 class="text-lg font-semibold">Latest tests</h2>
+            <p class="mt-1 text-sm text-[#9AA3C7]">Edit, publish or archive tests.</p>
+          </div>
         </div>
         <div class="flex flex-wrap gap-2">
           <button
@@ -166,38 +176,24 @@ watch(categoryFilter, () => {
       </div>
 
       <div class="py-4">
-        <div class="px-6 hidden md:grid grid-cols-[2fr_.7fr_.8fr_.4fr] gap-4 text-xs text-[#9AA3C7] pb-3 border-b border-[#262C45]">
-          <div>Test</div>
-          <div>Category</div>
-          <div>Created</div>
-          <div>Actions</div>
-        </div>
+        <div class="px-6">
+          <div v-if="pending" class="py-8 text-sm text-[#9AA3C7]">Loading...</div>
+          <div v-else-if="tests.length === 0" class="py-8 text-sm text-[#9AA3C7] text-center">No tests found.</div>
 
-        <div class="divide-y divide-[#262C45] px-6">
-          <div class="mt-4">
-            <div v-if="pending" class="py-8 text-sm text-[#9AA3C7]">Loading...</div>
-            <div v-else-if="tests.length === 0" class="py-8 text-sm text-[#9AA3C7] text-center">No tests found.</div>
-
-            <div v-else class="space-y-3">
-              <div
-                v-for="test in tests"
-                :key="test.id"
-                class="group rounded-2xl border border-[#262C45] p-4 md:p-0 md:bg-transparent md:border-0 md:rounded-none">
-                <div
-                  class="hidden md:grid md:grid-cols-[2fr_.7fr_.8fr_.3fr] gap-4 items-start px-3 py-4 border-b border-[#262C45] hover:bg-white/[0.03] transition">
+          <div v-else>
+            <!-- Mobile cards -->
+            <div class="md:hidden space-y-3 py-4">
+              <div v-for="test in tests" :key="test.id" class="group rounded-2xl border border-[#262C45] p-4">
+                <div class="space-y-3">
                   <div class="min-w-0">
                     <p class="font-semibold truncate">{{ test.title ?? test.name ?? "Untitled" }}</p>
                     <p class="text-xs text-[#9AA3C7] mt-1">{{ test.questions_count ?? 0 }} questions</p>
                   </div>
 
-                  <div>
+                  <div class="flex items-center justify-between gap-3">
                     <span class="inline-flex text-xs px-3 py-1 rounded-full border border-[#262C45] bg-white/5 text-[#9AA3C7]">
                       {{ test.category ?? "Uncategorized" }}
                     </span>
-                  </div>
-
-                  <div class="text-sm text-[#9AA3C7]">
-                    {{ test.created_at ? formatDateTime(test.created_at) : "-" }}
                   </div>
 
                   <div class="flex gap-2">
@@ -214,6 +210,56 @@ watch(categoryFilter, () => {
                   </div>
                 </div>
               </div>
+            </div>
+
+            <!-- Desktop table -->
+            <div class="hidden md:block">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="text-xs text-[#9AA3C7] border-b border-[#262C45]">
+                    <th scope="col" class="py-4 text-left font-medium">Test</th>
+                    <th scope="col" class="py-4 text-left font-medium">Category</th>
+                    <th scope="col" class="py-4 text-left font-medium hidden lg:table-cell">Created</th>
+                    <th scope="col" class="py-4 text-right font-medium">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody class="divide-y divide-[#262C45]">
+                  <tr v-for="test in tests" :key="test.id" class="hover:bg-white/[0.03] transition">
+                    <td class="py-4 align-top">
+                      <div class="min-w-0">
+                        <p class="font-semibold truncate">{{ test.title ?? test.name ?? "Untitled" }}</p>
+                        <p class="text-xs text-[#9AA3C7] mt-1">{{ test.questions_count ?? 0 }} questions</p>
+                      </div>
+                    </td>
+
+                    <td class="py-4 align-top">
+                      <span class="inline-flex text-xs px-3 py-1 rounded-full border border-[#262C45] bg-white/5 text-[#9AA3C7]">
+                        {{ test.category ?? "Uncategorized" }}
+                      </span>
+                    </td>
+
+                    <td class="py-4 align-top hidden lg:table-cell text-sm text-[#9AA3C7]">
+                      {{ test.created_at ? formatDateTime(test.created_at) : "-" }}
+                    </td>
+
+                    <td class="py-4 align-top text-right whitespace-nowrap">
+                      <div class="inline-flex gap-2">
+                        <NuxtLink
+                          :to="`/admin/tests/${test.id}`"
+                          class="rounded-xl border border-[#262C45] bg-white/5 px-3 py-2 text-xs hover:bg-white/10 transition"
+                          >Edit</NuxtLink
+                        >
+                        <button
+                          @click="deleteTest(Number(test.id))"
+                          class="rounded-xl border border-rose-500/10 bg-rose-500/10 px-3 py-2 text-xs hover:bg-rose-500/20 transition">
+                          Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
