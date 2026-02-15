@@ -62,10 +62,6 @@ const {
           <h1 class="text-2xl font-semibold tracking-wide">Dashboard</h1>
           <p class="mt-1 text-sm text-[#9AA3C7]">Tests, questions, categories and users.</p>
         </div>
-
-        <div class="flex items-center gap-3">
-          <button class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-3 text-sm hover:bg-white/10 transition">🔔</button>
-        </div>
       </div>
 
       <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">

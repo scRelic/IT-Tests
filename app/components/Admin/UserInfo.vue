@@ -94,7 +94,6 @@ const saveRole = () => {
             Change role
           </button>
 
-          <button class="h-10 rounded-xl border border-orange-500/25 bg-orange-500/10 text-sm text-orange-300 hover:opacity-90 transition">Ban user</button>
           <button
             @click="emit('delete-user', user?.id!)"
             class="h-10 rounded-xl border border-rose-500/25 bg-rose-500/10 text-sm text-rose-300 hover:opacity-90 transition">

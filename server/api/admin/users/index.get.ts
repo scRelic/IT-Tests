@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
         const searchLike = `%${searchValue}%`;
 
         const roleValue = typeof role === "string" ? role.trim() : "";
-        const allowedRoles = new Set(["admin", "user", "banned"]);
+        const allowedRoles = new Set(["admin", "user"]);
         const roleFilter = allowedRoles.has(roleValue) ? roleValue : "";
         const hasRole = roleFilter.length > 0;
 

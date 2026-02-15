@@ -47,6 +47,7 @@ const { data, pending, error, refresh } = await useFetch<AdminCategoriesResponse
 });
 
 const { push } = useToast();
+const { downloadFile, pending: downloadPending } = useExport();
 
 const categories = computed<AdminCategory[]>(() => data.value?.categories ?? []);
 
@@ -87,6 +88,15 @@ const deleteCategory = async (id: number) => {
   }
 };
 
+const handleDownloadExcel = async () => {
+  try {
+    await downloadFile("/api/admin/categories/export/categories.xlsx", "categories.xlsx");
+  } catch (error) {
+    console.error("Failed to download Excel:", error);
+    push({ title: "Error", description: "Failed to download Excel file", variant: "info", duration: 4000 });
+  }
+};
+
 watch(searchInput, (value) => {
   if (searchTimer) clearTimeout(searchTimer);
 
@@ -108,7 +118,12 @@ watch([sortBy, sortDir], () => {
         <h2 class="text-2xl font-semibold">Categories</h2>
       </div>
       <div class="flex items-center gap-2">
-        <button class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">Export</button>
+        <button
+          :disabled="downloadPending"
+          @click="handleDownloadExcel"
+          class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">
+          {{ downloadPending ? "Exporting..." : "Export Excel" }}
+        </button>
       </div>
     </div>
   </div>

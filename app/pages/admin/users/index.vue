@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import { formatDateTime } from "~~/shared/utils";
+import { formatDateDdMmYy } from "~~/shared/utils";
 import type { User } from "~~/shared/types/user";
 
 definePageMeta({
@@ -14,7 +14,7 @@ const limit = ref(10);
 const sortBy = ref<"level" | "last_visit_date" | "created_at">("created_at");
 const sortDir = ref<"desc" | "asc">("desc");
 
-const roleFilter = ref<"all" | "admin" | "user" | "banned">("all");
+const roleFilter = ref<"all" | "admin" | "user">("all");
 const roleQuery = computed(() => (roleFilter.value === "all" ? "" : roleFilter.value));
 
 const sortByOptions = [
@@ -53,6 +53,7 @@ const { data, pending, refresh } = await useFetch<AdminUsersResponse>("/api/admi
 });
 
 const { push } = useToast();
+const { downloadFile, pending: downloadPending } = useExport();
 
 const users = computed<User[]>(() => data.value?.users ?? []);
 const total = computed(() => Number(data.value?.total ?? 0));
@@ -114,7 +115,7 @@ watch([sortBy, sortDir], () => {
   if (isUserInfoOpen.value) closeUserInfo();
 });
 
-const setRole = (value: "all" | "admin" | "user" | "banned") => {
+const setRole = (value: "all" | "admin" | "user") => {
   roleFilter.value = value;
 };
 
@@ -156,6 +157,15 @@ const deleteUser = async (userId: number) => {
 
 const onKeydown = (e: KeyboardEvent) => {
   if (e.key === "Escape") closeUserInfo();
+};
+
+const handleDownloadExcel = async () => {
+  try {
+    await downloadFile("/api/admin/users/export/users.xlsx", "users.xlsx");
+  } catch (error) {
+    console.error("Failed to download Excel:", error);
+    push({ title: "Error", description: "Failed to download Excel file", variant: "info", duration: 4000 });
+  }
 };
 
 watch(
@@ -213,7 +223,12 @@ onBeforeUnmount(() => {
         <h2 class="text-2xl font-semibold">Users</h2>
       </div>
       <div class="flex items-center gap-2">
-        <button class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">Export</button>
+        <button
+          :disabled="downloadPending"
+          @click="handleDownloadExcel"
+          class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">
+          {{ downloadPending ? "Exporting..." : "Export Excel" }}
+        </button>
       </div>
     </div>
   </div>
@@ -226,11 +241,6 @@ onBeforeUnmount(() => {
             <p class="text-sm font-semibold">Accounts</p>
             <p class="text-xs text-[#9AA3C7] mt-1">Search by name/email. Filter by role, verification and status.</p>
           </div>
-          <!-- 
-          <div class="flex items-center gap-2">
-            <button class="h-9 rounded-xl border border-[#262C45] bg-white/5 px-3 text-xs hover:bg-white/10 transition">Filters</button>
-            <button class="h-9 rounded-xl border border-[#262C45] bg-white/5 px-3 text-xs hover:bg-white/10 transition">Sort</button>
-          </div> -->
         </div>
 
         <div class="mt-4 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
@@ -282,15 +292,6 @@ onBeforeUnmount(() => {
             ">
             Users
           </button>
-          <button
-            type="button"
-            @click="setRole('banned')"
-            class="text-xs px-3 py-1.5 rounded-full border transition"
-            :class="
-              roleFilter === 'banned' ? 'border-rose-500/25 bg-rose-500/10 text-rose-300' : 'border-rose-500/25 bg-rose-500/10 text-rose-300 hover:opacity-90'
-            ">
-            Banned
-          </button>
         </div>
       </div>
 
@@ -341,7 +342,7 @@ onBeforeUnmount(() => {
           </div>
 
           <div class="text-sm text-[#9AA3C7]">
-            {{ u.last_visit_date ? formatDateTime(u.last_visit_date) : "—" }}
+            {{ u.last_visit_date ? formatDateDdMmYy(u.last_visit_date) : "—" }}
           </div>
 
           <div class="flex items-center gap-2 lg:justify-end">

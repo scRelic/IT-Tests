@@ -17,6 +17,7 @@
     "@vueuse/motion": "^3.0.3",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
+    "exceljs": "^4.4.0",
     "nuxt": "^4.2.2",
     "nuxt-auth-utils": "^0.5.27",
     "pg": "^8.17.1",

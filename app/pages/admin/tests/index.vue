@@ -55,6 +55,7 @@ const { data, pending, refresh } = await useFetch("/api/admin/tests", {
 });
 
 const { push } = useToast();
+const { downloadFile, pending: downloadPending } = useExport();
 
 const tests = computed(() => data.value?.tests ?? []);
 const total = computed(() => Number(data.value?.total ?? 0));
@@ -94,6 +95,15 @@ const deleteTest = async (id: number) => {
   }
 };
 
+const handleExportExcel = async () => {
+  try {
+    await downloadFile("/api/admin/tests/export/tests.xlsx", "tests.xlsx");
+  } catch (error) {
+    console.error("Failed to download Excel:", error);
+    push({ title: "Error", description: "Failed to download Excel file", variant: "info", duration: 4000 });
+  }
+};
+
 watch(searchInput, (value) => {
   if (searchTimer) clearTimeout(searchTimer);
 
@@ -121,7 +131,12 @@ watch(categoryFilter, () => {
           <p class="mt-1 text-sm text-[#9AA3C7]">Edit, publish or archive tests.</p>
         </div>
         <div class="flex flex-wrap gap-2">
-          <button class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">Export</button>
+          <button
+            :disabled="downloadPending"
+            @click="handleExportExcel"
+            class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition">
+            {{ downloadPending ? "Exporting..." : "Export Excel" }}
+          </button>
           <NuxtLink
             to="/admin/tests/create"
             class="rounded-xl px-4 py-2 text-sm font-semibold bg-gradient-to-r from-[#6C7CFF] to-[#8A95FF] hover:shadow-[0_0_18px_4px_rgba(108,124,255,0.3)] transition flex items-center justify-center">
