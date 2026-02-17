@@ -25,8 +25,8 @@ defineProps<{
 </script>
 
 <template>
-  <section class="max-w-3xl mx-auto my-12">
-    <div class="relative overflow-hidden rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] p-8 mb-10">
+  <section class="max-w-3xl mx-auto my-12 max-[850px]:px-6 max-[450px]:px-3">
+    <div class="relative overflow-hidden rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] p-8 mb-10 max-[450px]:px-4">
       <div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
         <div>
           <div class="flex items-center gap-3 mb-3">
@@ -69,7 +69,7 @@ defineProps<{
       </div>
     </div>
 
-    <div class="bg-[#1B2033] border border-[#262C45] rounded-2xl p-8 mb-6" v-for="(item, index) in review" :key="index">
+    <div class="bg-[#1B2033] border border-[#262C45] rounded-2xl p-8 mb-6 max-[450px]:px-4" v-for="(item, index) in review" :key="index">
       <div>
         <p class="text-sm text-[#9AA3C7] mb-6">Question {{ index + 1 }} of {{ totalQuestions }}</p>
         <h3 class="text-lg font-medium mb-6">{{ item?.question_text }}</h3>

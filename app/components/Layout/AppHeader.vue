@@ -13,6 +13,7 @@ const activeNavItem = computed(() => {
 const navItems = ref([
   { name: "Tests", link: "/tests" },
   { name: "Categories", link: "/categories" },
+  { name: "Leaderboards", link: "/leaderboards" },
   { name: "Admin Panel", link: "/admin", rule: "admin" },
 ]);
 </script>

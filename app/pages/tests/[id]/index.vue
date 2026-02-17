@@ -95,8 +95,8 @@ const submitTest = async () => {
     <AppLoader v-if="pending" />
     <div v-else-if="error" class="text-red-400 text-center mt-32">Failed to load test.</div>
     <div v-else-if="!questions.length" class="text-slate-400 text-center">No questions.</div>
-    <section v-else-if="!visibleResults" class="max-w-3xl mx-auto px-6 py-16">
-      <div class="bg-[#1B2033] border border-[#262C45] rounded-2xl p-8">
+    <section v-else-if="!visibleResults" class="max-w-3xl mx-auto px-6 py-16 max-[500px]:px-3 max-[500px]:py-6">
+      <div class="bg-[#1B2033] border border-[#262C45] rounded-2xl p-8 max-[500px]:px-4">
         <h2 class="text-2xl font-semibold mb-2">{{ test?.title }}</h2>
         <p class="text-sm text-[#9AA3C7] mb-6">Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</p>
 

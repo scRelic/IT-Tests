@@ -222,33 +222,33 @@ watch(categoryFilter, () => {
               <table class="w-full text-sm">
                 <thead>
                   <tr class="text-xs text-[#9AA3C7] border-b border-[#262C45]">
-                    <th scope="col" class="py-4 text-left font-medium">Test</th>
-                    <th scope="col" class="py-4 text-left font-medium">Category</th>
-                    <th scope="col" class="py-4 text-left font-medium hidden lg:table-cell">Created</th>
-                    <th scope="col" class="py-4 text-right font-medium">Actions</th>
+                    <th scope="col" class="py-4 px-4 text-left font-medium">Test</th>
+                    <th scope="col" class="py-4 px-4 text-left font-medium">Category</th>
+                    <th scope="col" class="py-4 px-4 text-left font-medium hidden lg:table-cell">Created</th>
+                    <th scope="col" class="py-4 px-4 text-right font-medium">Actions</th>
                   </tr>
                 </thead>
 
-                <tbody class="divide-y divide-[#262C45]">
-                  <tr v-for="test in tests" :key="test.id" class="hover:bg-white/[0.03] transition">
-                    <td class="py-4 align-top">
+                <tbody>
+                  <tr v-for="test in tests" :key="test.id" class="hover:bg-white/[0.03] transition border-b border-[#262C45]">
+                    <td class="py-4 px-4 align-top">
                       <div class="min-w-0">
                         <p class="font-semibold truncate">{{ test.title ?? test.name ?? "Untitled" }}</p>
                         <p class="text-xs text-[#9AA3C7] mt-1">{{ test.questions_count ?? 0 }} questions</p>
                       </div>
                     </td>
 
-                    <td class="py-4 align-top">
+                    <td class="py-4 px-4 align-top">
                       <span class="inline-flex text-xs px-3 py-1 rounded-full border border-[#262C45] bg-white/5 text-[#9AA3C7]">
                         {{ test.category ?? "Uncategorized" }}
                       </span>
                     </td>
 
-                    <td class="py-4 align-top hidden lg:table-cell text-sm text-[#9AA3C7]">
+                    <td class="py-4 px-4 align-top hidden lg:table-cell text-sm text-[#9AA3C7]">
                       {{ test.created_at ? formatDateTime(test.created_at) : "-" }}
                     </td>
 
-                    <td class="py-4 align-top text-right whitespace-nowrap">
+                    <td class="py-4 px-4 align-top text-right whitespace-nowrap">
                       <div class="inline-flex gap-2">
                         <NuxtLink
                           :to="`/admin/tests/${test.id}/edit`"

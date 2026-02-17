@@ -23,7 +23,7 @@ const stats = ref([
   { label: "Streak", value: props.user?.current_streak ?? "—" },
   { label: "Level", value: props.user?.level ?? "—" },
   { label: "Exp", value: props.user?.exp ?? "—" },
-  { label: "Last visit", value: props.user?.last_visit_date ? formatDateTime(props.user.last_visit_date) : "—" },
+  { label: "Last visit", value: props.user?.last_visit_date ? formatDateDdMmYy(props.user.last_visit_date) : "—" },
   { label: "Date of birth", value: props.user?.birth_date ? formatDateDdMmYy(props.user.birth_date) : "—" },
   { label: "Registered", value: props.user?.created_at ? formatDateTime(props.user.created_at) : "—" },
   { label: "Role", value: props.user?.role ?? "—" },
