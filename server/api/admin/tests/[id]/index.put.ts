@@ -11,6 +11,8 @@ type QuestionInput = {
     question_text: string;
     answers: OptionInput[];
     correct_answer_id: number | null;
+    code?: string | null;
+    language?: string | null;
 };
 
 type BodyInput = {
@@ -163,10 +165,20 @@ export default defineEventHandler(async (event) => {
                     `UPDATE questions
          SET question_text = $1,
              answers = $2::jsonb,
-             correct_answer_id = $3
-         WHERE id = $4 AND test_id = $5
+             correct_answer_id = $3,
+             code = $4,
+             language = $5
+         WHERE id = $6 AND test_id = $7
          RETURNING id;`,
-                    [q.question_text.trim(), JSON.stringify(normalizedAnswers), q.correct_answer_id, q.id, testId]
+                    [
+                        q.question_text.trim(),
+                        JSON.stringify(normalizedAnswers),
+                        q.correct_answer_id,
+                        q.code || null,
+                        q.language || null,
+                        q.id,
+                        testId
+                    ]
                 );
 
                 if (updatedQuestion.rowCount === 0) {
@@ -174,9 +186,16 @@ export default defineEventHandler(async (event) => {
                 }
             } else {
                 await client.query(
-                    `INSERT INTO questions (test_id, question_text, answers, correct_answer_id)
-         VALUES ($1, $2, $3::jsonb, $4);`,
-                    [testId, q.question_text.trim(), JSON.stringify(normalizedAnswers), q.correct_answer_id]
+                    `INSERT INTO questions (test_id, question_text, answers, correct_answer_id, code, language)
+         VALUES ($1, $2, $3::jsonb, $4, $5, $6);`,
+                    [
+                        testId,
+                        q.question_text.trim(),
+                        JSON.stringify(normalizedAnswers),
+                        q.correct_answer_id,
+                        q.code || null,
+                        q.language || null
+                    ]
                 );
             }
         }

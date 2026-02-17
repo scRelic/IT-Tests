@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     const [testRes, questionsRes] = await Promise.all([
       db.query(queryTestWithCategory, [id]),
       db.query(
-        "SELECT id, test_id, question_text, answers, correct_answer_id FROM questions WHERE test_id = $1 ORDER BY id ASC",
+        "SELECT id, test_id, question_text, answers, correct_answer_id, code, language FROM questions WHERE test_id = $1 ORDER BY id ASC",
         [id],
       ),
     ]);

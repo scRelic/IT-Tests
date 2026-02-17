@@ -2,8 +2,9 @@
 import { computed } from "vue";
 
 const route = useRoute();
-
+const { user } = useUser();
 const { logout } = useAuth();
+const { mobileOpen, closeMobile, desktopOpen } = useSidebar();
 
 const { data } = await useFetch("/api/admin/overview", {
   key: "admin-overview",
@@ -19,8 +20,6 @@ const tabs = computed(() => [
 ]);
 
 const activeTab = computed(() => tabs.value.find((tab) => tab.href === route.path) || null);
-
-const { mobileOpen, desktopOpen, toggleMobile, closeMobile } = useSidebar();
 </script>
 
 <template>
@@ -44,7 +43,7 @@ const { mobileOpen, desktopOpen, toggleMobile, closeMobile } = useSidebar();
       <div class="px-6">
         <div class="rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] p-4">
           <p class="text-xs text-[#9AA3C7]">Signed in as</p>
-          <p class="mt-1 text-sm font-semibold">Dima (Admin)</p>
+          <p class="mt-1 text-sm font-semibold">{{ user?.name || "Unknown User" }}</p>
           <div class="mt-3 flex items-center gap-2">
             <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
             <span class="text-xs text-[#9AA3C7]">System healthy</span>
@@ -78,7 +77,6 @@ const { mobileOpen, desktopOpen, toggleMobile, closeMobile } = useSidebar();
   </div>
 
   <Teleport to="body">
-    <!-- Mobile drawer (fade overlay + slide panel) -->
     <div class="lg:hidden fixed inset-0 z-40 pointer-events-none">
       <Transition
         enter-active-class="transition-opacity duration-200 ease-out"

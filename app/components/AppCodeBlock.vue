@@ -14,6 +14,8 @@ const isCopied = ref(false);
 const highlight = () => {
   if (codeElement.value) {
     codeElement.value.removeAttribute("data-highlighted");
+    // eslint-disable-next-line
+    // @ts-ignore - highlight.js safely handles syntax highlighting
     hljs.highlightElement(codeElement.value);
   }
 };

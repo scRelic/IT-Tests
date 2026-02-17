@@ -80,6 +80,8 @@ const form = ref<{
     question_text: string;
     answers: Option[];
     correct_answer_id: number | null;
+    code?: string | null;
+    language?: string | null;
   }>;
 } | null>(null);
 
@@ -88,6 +90,8 @@ const createEmptyQuestion = (): {
   question_text: string;
   answers: Option[];
   correct_answer_id: number | null;
+  code?: string | null;
+  language?: string | null;
 } => {
   const baseAnswers: Option[] = [1, 2, 3, 4].map((idx) => ({
     id: idx,
@@ -100,6 +104,8 @@ const createEmptyQuestion = (): {
     question_text: "",
     answers: baseAnswers,
     correct_answer_id: null,
+    code: null,
+    language: "javascript",
   };
 };
 
@@ -117,6 +123,8 @@ watch(
         question_text: q.question_text ?? "",
         answers: normalizeAnswers(q.answers),
         correct_answer_id: q.correct_answer_id ?? null,
+        code: q.code ?? null,
+        language: q.language ?? "javascript",
       })),
     };
 
@@ -209,6 +217,8 @@ const save = async () => {
           question_text: q.question_text,
           answers: q.answers,
           correct_answer_id: q.correct_answer_id,
+          code: q.code || null,
+          language: q.language || "javascript",
         })),
       },
     });
@@ -301,6 +311,37 @@ const save = async () => {
                 class="w-full rounded-xl border border-[#262C45] bg-white/5 px-3 py-3 text-sm outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition"
                 placeholder="Question" />
             </label>
+
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-[#9AA3C7]">Code snippet (optional)</span>
+                <select
+                  v-model="q.language"
+                  class="text-xs rounded-lg border border-[#262C45] bg-white/5 px-2 py-1 outline-none focus:border-[#6C7CFF] transition">
+                  <option value="javascript">JavaScript</option>
+                  <option value="typescript">TypeScript</option>
+                  <option value="python">Python</option>
+                  <option value="java">Java</option>
+                  <option value="csharp">C#</option>
+                  <option value="cpp">C++</option>
+                  <option value="html">HTML</option>
+                  <option value="css">CSS</option>
+                  <option value="sql">SQL</option>
+                  <option value="bash">Bash</option>
+                </select>
+              </div>
+
+              <textarea
+                v-model="q.code"
+                rows="6"
+                class="w-full rounded-xl border border-[#262C45] bg-white/5 px-3 py-3 text-sm font-mono outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition resize-none"
+                placeholder="Enter code here..."></textarea>
+
+              <div v-if="q.code && q.code.trim()" class="mt-3">
+                <p class="text-xs text-[#9AA3C7] mb-2">Preview:</p>
+                <AppCodeBlock :code="q.code" :language="q.language || 'javascript'" />
+              </div>
+            </div>
 
             <div class="space-y-2">
               <p class="text-xs text-[#9AA3C7]">Answers (pick correct)</p>
