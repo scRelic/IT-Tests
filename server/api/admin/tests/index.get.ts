@@ -36,6 +36,8 @@ export default defineEventHandler(async (event) => {
     let orderClause = 'ORDER BY t.id DESC';
     if (sortBy === 'created_at') {
       orderClause = `ORDER BY t.created_at ${sortDir} NULLS LAST, t.id DESC`;
+    } else if (sortBy === 'questions_count') {
+      orderClause = `ORDER BY questions_count ${sortDir}, t.id DESC`;
     }
 
     const limitClause = `LIMIT $${values.push(pageSize)}`;

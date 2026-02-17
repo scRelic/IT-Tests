@@ -7,12 +7,6 @@ const PAGE_SIZE = 6;
 const searchInput = ref("");
 const search = ref("");
 const isSearching = ref(false);
-const searchDebounceMs = 350;
-let searchTimer: ReturnType<typeof setTimeout> | undefined;
-
-onBeforeUnmount(() => {
-  if (searchTimer) clearTimeout(searchTimer);
-});
 
 const {
   data: initialCategories,
@@ -62,33 +56,45 @@ const loadMore = async () => {
   }
 };
 
-watch(searchInput, (value) => {
-  if (searchTimer) clearTimeout(searchTimer);
+const handleSearch = async () => {
+  search.value = searchInput.value.trim();
+  await reloadCategories();
+};
 
-  searchTimer = setTimeout(async () => {
-    search.value = value.trim();
-    await reloadCategories();
-  }, searchDebounceMs);
-});
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === "Enter") {
+    handleSearch();
+  }
+};
 </script>
 
 <template>
   <main>
     <AppLoader v-if="pending || isSearching" />
 
-    <section v-else class="max-w-7xl mx-auto px-6 py-24">
+    <section v-else class="max-w-7xl mx-auto px-6 py-24 max-[1000px]:py-12">
       <div class="mb-8 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
         <div>
           <h2 class="text-3xl font-semibold mb-2">Areas of study</h2>
           <p class="text-[#9AA3C7] max-w-xl">Choose a direction and start taking tests grouped by level and technologies.</p>
         </div>
-        <label class="relative w-full lg:w-[420px]">
-          <Icon name="material-symbols:search-check-2-outline" class="absolute left-3 top-[16px] text-[#9AA3C7]" />
-          <input
-            v-model="searchInput"
-            class="w-full rounded-xl border border-[#262C45] bg-white/5 pl-9 pr-3 py-3 text-sm outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition"
-            placeholder="Search categories…" />
-        </label>
+        <div class="relative w-full lg:w-[420px] flex gap-2">
+          <label class="relative flex-1">
+            <Icon name="material-symbols:search-check-2-outline" class="absolute left-3 top-[16px] text-[#9AA3C7]" />
+            <input
+              v-model="searchInput"
+              class="w-full rounded-xl border border-[#262C45] bg-white/5 pl-9 pr-3 py-3 text-sm outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition"
+              placeholder="Search categories…"
+              @keydown="handleKeyDown" />
+          </label>
+          <button
+            @click="handleSearch"
+            :disabled="isSearching"
+            class="px-4 py-3 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed transition border border-[#262C45] bg-green-700 hover:bg-green-800 text-white text-sm flex items-center gap-2">
+            <span v-if="!isSearching">Search</span>
+            <span v-else class="inline-block animate-spin">⟳</span>
+          </button>
+        </div>
       </div>
 
       <div class="space-y-6" v-if="categories.length">
@@ -122,9 +128,13 @@ watch(searchInput, (value) => {
               >
             </div>
           </div>
-          <div class="lg:col-span-3 flex items-center justify-between lg:justify-end lg:gap-4">
+          <div class="lg:col-span-3 flex items-center justify-between lg:justify-end lg:gap-4 max-[550px]:flex-col">
             <span class="text-[#9AA3C7] text-sm">{{ category.tests_count }} tests</span>
-            <RouterLink :to="`/tests?category=${encodeURIComponent(category.title)}`" class="btn">Go</RouterLink>
+            <RouterLink
+              :to="`/tests?category=${encodeURIComponent(category.title)}`"
+              class="btn max-[550px]:w-full max-[550px]:w-auto text-center max-[550px]:mt-3"
+              >Go</RouterLink
+            >
           </div>
         </div>
       </div>

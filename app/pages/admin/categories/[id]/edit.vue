@@ -124,7 +124,7 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div class="px-6 my-6">
+  <div class="px-6 my-6 max-[550px]:p-3">
     <div class="mb-4">
       <div>
         <h1 class="text-2xl font-semibold mt-1">Edit category</h1>
@@ -175,7 +175,7 @@ watchEffect(() => {
           <div>
             <label class="text-sm text-[#9AA3C7]">Technologies</label>
 
-            <div class="mt-2 flex flex-col md:flex-row md:items-center gap-2">
+            <div class="mt-2 flex md:flex-row md:items-center gap-2">
               <input
                 v-model="technologyInput"
                 @keydown.enter.prevent="addTechnology"

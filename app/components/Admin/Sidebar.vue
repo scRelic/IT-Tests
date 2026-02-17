@@ -59,7 +59,8 @@ const { mobileOpen, desktopOpen, toggleMobile, closeMobile } = useSidebar();
             class="group flex items-center gap-3 rounded-xl px-3 py-3 text-sm border transition"
             :class="
               activeTab && activeTab.name === tab.name ? 'border-[#6C7CFF]/40 bg-[#6C7CFF]/10' : 'border-transparent hover:border-[#262C45]  hover:bg-white/5'
-            ">
+            "
+            @click="closeMobile">
             <span class="h-9 w-9 rounded-xl border border-[#262C45] bg-white/5 flex items-center justify-center text-[#9AA3C7]">{{ tab.icon }}</span>
             <div class="flex-1">
               <p class="font-semibold">{{ tab.name }}</p>
@@ -134,7 +135,8 @@ const { mobileOpen, desktopOpen, toggleMobile, closeMobile } = useSidebar();
                   activeTab && activeTab.name === tab.name
                     ? 'border-[#6C7CFF]/40 bg-[#6C7CFF]/10'
                     : 'border-transparent hover:border-[#262C45]  hover:bg-white/5'
-                ">
+                "
+                @click="closeMobile">
                 <span class="h-9 w-9 rounded-xl border border-[#262C45] bg-white/5 flex items-center justify-center text-[#9AA3C7]">{{ tab.icon }}</span>
                 <div class="flex-1">
                   <p class="font-semibold">{{ tab.name }}</p>

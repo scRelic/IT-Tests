@@ -13,6 +13,8 @@ export type Question = {
     question_text: string;
     answers: Option[];
     correct_answer_id?: number;
+    code?: string;
+    language?: string;
 }
 
 export type Option = {

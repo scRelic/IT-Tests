@@ -6,6 +6,7 @@ await fetchUser();
 <template>
   <div class="min-h-screen flex flex-col">
     <LayoutAppHeader />
+    <LayoutClientSidebar />
     <main class="flex-1">
       <slot />
     </main>

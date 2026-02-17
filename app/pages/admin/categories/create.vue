@@ -109,7 +109,7 @@ const createCategory = async () => {
 </script>
 
 <template>
-  <div class="px-6 my-6">
+  <div class="px-6 my-6 max-[550px]:p-3">
     <div class="mb-4">
       <div>
         <h1 class="text-2xl font-semibold mt-1">Create category</h1>
@@ -171,7 +171,7 @@ const createCategory = async () => {
           <div>
             <label class="text-sm text-[#9AA3C7]">Technologies</label>
 
-            <div class="mt-2 flex flex-col md:flex-row md:items-center gap-2">
+            <div class="mt-2 flex md:flex-row md:items-center gap-2">
               <input
                 v-model="technologyInput"
                 :disabled="isLoading"
@@ -206,14 +206,17 @@ const createCategory = async () => {
           </div>
         </div>
 
-        <div class="p-5 border-t border-[#262C45] flex flex-col sm:flex-row gap-2 justify-end">
-          <NuxtLink to="/admin/categories" class="py-2 rounded-xl border border-[#262C45] bg-white/5 px-4 text-sm hover:bg-white/10 transition">
+        <div class="p-5 border-t border-[#262C45] flex flex-col sm:flex-row gap-3 justify-end">
+          <NuxtLink
+            to="/admin/categories"
+            class="h-11 text-center rounded-xl border border-[#262C45] bg-white/5 px-4 text-sm hover:bg-white/10 transition py-3">
             Cancel
           </NuxtLink>
+
           <button
             @click="createCategory"
             :disabled="isLoading"
-            class="rounded-xl px-4 text-sm font-semibold bg-[#6C7CFF] hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed">
+            class="rounded-xl h-11 px-4 text-sm font-semibold bg-[#6C7CFF] hover:opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed">
             Create category
           </button>
         </div>

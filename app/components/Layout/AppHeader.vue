@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from "vue";
 
-const { loggedIn, user } = useAuth();
+const { loggedIn } = useAuth();
+const { user } = useUser();
+const { mobileOpen, toggleMobile, closeMobile } = useSidebar();
 
 const activeNavItem = computed(() => {
   const path = useRoute().path;
@@ -19,10 +21,20 @@ const navItems = ref([
   <header class="sticky top-0 z-10 bg-[#0d0f14]/85 backdrop-blur-[10px] border-b border-[#262C45] py-4">
     <div class="container">
       <div class="flex justify-between items-center">
+        <button
+          class="lg:hidden p-2 rounded-lg border border-[#262C45] hover:border-[#6C7CFF]/50 hover:bg-white/5 transition"
+          @click="toggleMobile"
+          aria-label="Toggle menu">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
         <NuxtLink to="/">
           <h1 class="text-[#6C7CFF] text-[20px] font-[700]">IT Tests</h1>
         </NuxtLink>
-        <nav>
+
+        <nav class="hidden lg:block">
           <ul class="flex justify-between items-center gap-7">
             <template v-for="item in navItems" :key="item.name">
               <li v-if="!item.rule || (item.rule === 'admin' && user?.role === 'admin')">
@@ -39,7 +51,7 @@ const navItems = ref([
 
         <NuxtLink
           to="/auth/login"
-          class="px-4 py-2 rounded-lg border border-white/10 text-slate-200 hover:border-indigo-500/50 hover:text-white transition"
+          class="px-4 py-2 rounded-lg border border-white/10 text-slate-200 hover:border-indigo-500/50 hover:text-white transition hidden md:block"
           v-if="!loggedIn">
           Log In
         </NuxtLink>
@@ -47,9 +59,9 @@ const navItems = ref([
         <NuxtLink
           v-else
           to="/profile"
-          class="font-mono text-sm text-slate-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/5 transition flex items-center gap-1">
+          class="flex gap-2 font-mono text-sm text-slate-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/5 transition max-[550px]:hidden">
           <span class="text-indigo-400">$</span>
-          {{ user?.name ?? "User" }}
+          <span>{{ user?.name ?? "User" }}</span>
           <svg class="w-3 h-3 opacity-60" viewBox="0 0 20 20" fill="currentColor">
             <path
               fill-rule="evenodd"

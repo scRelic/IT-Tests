@@ -228,7 +228,7 @@ const save = async () => {
 </script>
 
 <template>
-  <section class="p-6 lg:p-10">
+  <section class="p-6 lg:p-10 max-[550px]:p-3">
     <div class="max-w-5xl mx-auto space-y-6">
       <div v-if="pending" class="px-2 py-10 text-center text-sm text-[#9AA3C7]">Loading test…</div>
       <div v-else-if="error" class="px-2 py-10 text-center text-sm text-rose-200">Failed to load test.</div>
@@ -241,13 +241,11 @@ const save = async () => {
             <p class="mt-1 text-sm text-[#9AA3C7]">ID: {{ testId }}</p>
           </div>
           <div class="flex gap-2">
-            <button
-              type="button"
-              class="rounded-xl border border-[#262C45] bg-white/5 px-4 py-2 text-sm hover:bg-white/10 transition disabled:opacity-60"
-              :disabled="saving || pending || !form || !isFormValid"
-              @click="save">
-              {{ saving ? "Saving…" : "Save" }}
-            </button>
+            <NuxtLink
+              to="/admin/tests"
+              class="rounded-xl border border-[#262C45] bg-white/5 px-3 py-2 text-xs hover:bg-white/10 transition max-[550px]:w-full max-[550px]:text-center">
+              Back to list
+            </NuxtLink>
           </div>
         </div>
 
@@ -292,7 +290,7 @@ const save = async () => {
                 class="text-[11px] px-2 py-1 rounded-lg border border-rose-500/40 text-rose-300 bg-rose-500/10 hover:bg-rose-500/20 transition disabled:opacity-60"
                 :disabled="saving || pending"
                 @click="removeQuestion(qIdx)">
-                Удалить вопрос
+                Delete question
               </button>
             </div>
 
@@ -324,7 +322,7 @@ const save = async () => {
                   class="text-[11px] px-2 py-1 rounded-lg border border-[#262C45] text-[#9AA3C7] hover:bg-white/10 transition disabled:opacity-40"
                   :disabled="saving || pending || q.answers.length <= 1"
                   @click="removeAnswer(qIdx, aIdx)">
-                  Удалить
+                  Delete
                 </button>
               </div>
 

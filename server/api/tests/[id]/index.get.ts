@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
 
     const [questions, test] = await Promise.all([
       db.query(
-        'SELECT id, test_id, question_text, answers FROM questions WHERE test_id = $1',
+        'SELECT id, test_id, question_text, answers, code, language FROM questions WHERE test_id = $1',
         [id]
       ),
       db.query(queryTest, [id]),

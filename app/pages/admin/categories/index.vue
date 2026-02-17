@@ -24,12 +24,6 @@ const sortByOptions = [
 const toggleSortDir = () => {
   sortDir.value = sortDir.value === "asc" ? "desc" : "asc";
 };
-const searchDebounceMs = 350;
-let searchTimer: ReturnType<typeof setTimeout> | undefined;
-
-onBeforeUnmount(() => {
-  if (searchTimer) clearTimeout(searchTimer);
-});
 
 type AdminCategory = Category & {
   created_at?: string | null;
@@ -98,14 +92,16 @@ const handleDownloadExcel = async () => {
   }
 };
 
-watch(searchInput, (value) => {
-  if (searchTimer) clearTimeout(searchTimer);
+const handleSearch = () => {
+  page.value = 1;
+  search.value = searchInput.value.trim();
+};
 
-  searchTimer = setTimeout(() => {
-    page.value = 1;
-    search.value = value.trim();
-  }, searchDebounceMs);
-});
+const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.key === "Enter") {
+    handleSearch();
+  }
+};
 
 watch([sortBy, sortDir], () => {
   page.value = 1;
@@ -113,7 +109,7 @@ watch([sortBy, sortDir], () => {
 </script>
 
 <template>
-  <section class="p-6">
+  <section class="p-6 max-[700px]:p-3">
     <div class="rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
       <div class="p-5 border-b border-[#262C45]">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -138,20 +134,27 @@ watch([sortBy, sortDir], () => {
           </button>
         </div>
 
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-[1fr_auto] gap-3">
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-[1fr_auto_auto] gap-3">
           <label class="relative">
             <Icon name="material-symbols:search-check-2-outline" class="absolute left-3 top-[16px] text-[#9AA3C7]" />
             <input
               v-model="searchInput"
-              class="w-full rounded-xl border border-[#262C45] bg-white/5 pl-9 pr-3 py-3 text-sm outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition"
-              placeholder="Search categories…" />
+              class="w-full rounded-xl border border-[#262C45] bg-white/5 pl-9 pr-24 py-3 text-sm outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition"
+              placeholder="Search categories…"
+              @keydown="handleKeyDown" />
+            <button
+              @click="handleSearch"
+              type="button"
+              class="absolute right-1 top-1 px-3 py-2 rounded-lg bg-gradient-to-r from-[#6C7CFF] to-[#8A95FF] text-white font-medium text-sm hover:shadow-[0_0_18px_4px_rgba(108,124,255,0.3)] transition">
+              Search
+            </button>
           </label>
           <NuxtLink to="/admin/categories/create" class="rounded-xl px-4 py-3 text-sm font-semibold bg-[#6C7CFF] hover:opacity-90 transition cursor-pointer"
             >+ New Category</NuxtLink
           >
         </div>
 
-        <div class="mt-3 flex flex-col md:flex-row md:items-center gap-2">
+        <div class="mt-3 flex md:flex-row md:items-center gap-2">
           <AppSelect v-model="sortBy" :options="sortByOptions" />
           <button type="button" class="h-11 rounded-xl border border-[#262C45] bg-white/5 px-4 text-sm hover:bg-white/10 transition" @click="toggleSortDir">
             {{ sortDir === "asc" ? "Asc" : "Desc" }}
@@ -184,21 +187,21 @@ watch([sortBy, sortDir], () => {
               </div>
             </div>
 
-            <div class="mt-2 flex items-center justify-between">
+            <div class="mt-2 flex items-center justify-between max-[550px]:flex-col max-[550px]:items-start gap-3 max-[550px]:gap-5">
               <div class="mt-3 flex flex-wrap gap-2">
                 <span class="text-[11px] px-2.5 py-1 rounded-full border border-[#262C45] bg-white/5 text-[#9AA3C7]" v-for="tech in item.technologies">{{
                   tech
                 }}</span>
               </div>
-              <div class="flex gap-2">
+              <div class="flex gap-2 max-[550px]:w-full">
                 <NuxtLink
                   :to="`/admin/categories/${item.id}/edit`"
-                  class="rounded-xl border border-[#6C7CFF] bg-[#6C7CFF] px-3 py-2 text-xs hover:opacity-90 transition"
+                  class="rounded-xl border border-[#6C7CFF] bg-[#6C7CFF] px-3 py-2 text-xs hover:opacity-90 transition max-[550px]:w-full max-[550px]:text-center"
                   >Edit</NuxtLink
                 >
                 <button
                   @click="deleteCategory(item.id)"
-                  class="rounded-xl border border-red-700 bg-red-600/40 px-3 py-2 text-xs hover:bg-red-600/60 transition">
+                  class="rounded-xl border border-red-700 bg-red-600/40 px-3 py-2 text-xs hover:bg-red-600/60 transition max-[550px]:w-full max-[550px]:text-center">
                   Delete
                 </button>
               </div>

@@ -38,7 +38,7 @@ const getStatus = (item: { level: string; exp: number }) => {
           <h2 class="mt-2 text-lg font-semibold">How to level up</h2>
           <p class="mt-1 text-sm text-[#9AA3C7]">Earn EXP by passing tests and improving accuracy.</p>
         </div>
-        <span class="text-xs px-3 py-1 rounded-full bg-[#6C7CFF]/15 text-[#6C7CFF] border border-[#262C45]">Current: {{ level }}</span>
+        <span class="text-xs px-3 py-1 rounded-full bg-[#6C7CFF]/15 text-[#6C7CFF] border border-[#262C45] max-[550px]:text-center">Current: {{ level }}</span>
       </div>
     </div>
 
@@ -61,9 +61,7 @@ const getStatus = (item: { level: string; exp: number }) => {
       </div>
 
       <div class="mt-6 relative">
-        <div class="absolute left-4 top-0 bottom-0 w-px bg-[#262C45]"></div>
-
-        <div class="relative flex gap-4 pb-5" v-for="item in LEVEL_UP_EXP" :key="item.level">
+        <div class="level-item relative flex gap-4 pb-5" v-for="item in LEVEL_UP_EXP" :key="item.level">
           <div class="mt-1 h-8 w-8 rounded-full border border-[#262C45] bg-[#1b2033] flex items-center justify-center text-xs text-[#9AA3C7]">
             <Icon v-if="getStatus(item) === 'passed'" name="material-symbols:check-circle" class="text-[20px] text-green-500" />
             <Icon v-else-if="getStatus(item) === 'current'" name="material-symbols:bolt" class="text-[20px] animate-pulse text-yellow-500" />
@@ -89,3 +87,23 @@ const getStatus = (item: { level: string; exp: number }) => {
     </div>
   </AppBaseModal>
 </template>
+
+<style scoped>
+.level-item {
+  position: relative;
+}
+
+.level-item::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 20px;
+  bottom: 0;
+  width: 1px;
+  background: #262c45;
+}
+
+.level-item:last-child::before {
+  display: none;
+}
+</style>

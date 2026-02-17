@@ -66,7 +66,8 @@ const {
       <AppLoader v-if="pending" />
 
       <div v-else>
-        <section class="bg-[#1B2033] border border-[#262C45] rounded-2xl p-6 flex justify-between gap-6 items-center mb-6">
+        <section
+          class="bg-[#1B2033] border border-[#262C45] rounded-2xl p-6 flex justify-between gap-6 items-center mb-6 max-[550px]:flex-col max-[550px]:items-start">
           <div class="flex gap-6">
             <div class="w-24 h-24 rounded-2xl bg-[#6C7CFF] flex items-center justify-center text-3xl font-bold overflow-hidden">
               <img v-if="user?.avatar_url" :src="user.avatar_url" alt="Avatar" class="h-full w-full object-cover" />
@@ -79,11 +80,17 @@ const {
             </div>
           </div>
 
-          <div class="flex flex-col gap-3">
-            <button type="button" @click="openEdit" class="w-32 py-2 rounded-lg border border-[#262C45] hover:bg-[#262C45] transition-colors duration-200">
+          <div class="flex flex-col gap-3 max-[550px]:w-full">
+            <button
+              type="button"
+              @click="openEdit"
+              class="w-32 max-[550px]:w-full py-2 rounded-lg border border-[#262C45] hover:bg-[#262C45] transition-colors duration-200">
               Edit
             </button>
-            <button type="button" @click="handleLogout" class="w-32 py-2 rounded-lg border border-[#262C45] hover:bg-[#262C45] transition-colors duration-200">
+            <button
+              type="button"
+              @click="handleLogout"
+              class="w-32 max-[550px]:w-full py-2 rounded-lg border border-[#262C45] hover:bg-[#262C45] transition-colors duration-200">
               Logout
             </button>
           </div>

@@ -20,12 +20,18 @@ const emit = defineEmits<{
 
 const rootRef = ref<HTMLElement | null>(null);
 const isOpen = ref(false);
+const selectId = Math.random().toString(36).slice(2, 11);
 
 const selected = computed(() => props.options.find((o) => o.value === props.modelValue) ?? null);
 
 const toggle = () => {
   if (props.disabled) return;
   isOpen.value = !isOpen.value;
+
+  // Notify other selects to close
+  if (isOpen.value) {
+    document.dispatchEvent(new CustomEvent("selectOpened", { detail: { id: selectId } }));
+  }
 };
 
 const close = () => {
@@ -50,14 +56,23 @@ const onKeydown = (event: KeyboardEvent) => {
   if (event.key === "Escape") close();
 };
 
+const onSelectOpened = (e: Event) => {
+  const customEvent = e as CustomEvent;
+  if (customEvent.detail?.id !== selectId && isOpen.value) {
+    close();
+  }
+};
+
 onMounted(() => {
   document.addEventListener("click", onClickOutside);
   window.addEventListener("keydown", onKeydown);
+  document.addEventListener("selectOpened", onSelectOpened);
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", onClickOutside);
   window.removeEventListener("keydown", onKeydown);
+  document.removeEventListener("selectOpened", onSelectOpened);
 });
 </script>
 
@@ -65,7 +80,7 @@ onBeforeUnmount(() => {
   <div ref="rootRef" class="relative">
     <button
       type="button"
-      class="h-11 min-w-[10rem] rounded-xl border border-[#262C45] bg-white/5 px-3 text-left text-sm text-white outline-none focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition disabled:opacity-60 disabled:cursor-not-allowed"
+      class="h-11 min-w-[10rem] w-full rounded-xl border border-[#262C45] bg-white/5 px-3 text-left text-sm text-white outline-none focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition disabled:opacity-60 disabled:cursor-not-allowed"
       :disabled="disabled"
       @click.prevent.stop="toggle">
       <span v-if="selected" class="inline-flex items-center justify-between w-full gap-3">
@@ -78,7 +93,7 @@ onBeforeUnmount(() => {
       </span>
     </button>
 
-    <div v-if="isOpen" class="absolute z-30 mt-2 min-w-[10rem] rounded-2xl border border-[#262C45] bg-[#14182a] overflow-hidden">
+    <div v-if="isOpen" class="absolute z-30 mt-2 min-w-[10rem] w-full rounded-2xl border border-[#262C45] bg-[#14182a] overflow-hidden">
       <button
         v-for="opt in options"
         :key="opt.value"

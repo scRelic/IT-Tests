@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from "vue";
 import type { Test, Question } from "@/../shared/types/test";
-import { REWARD_EXP } from "@/../shared/constants";
 
 definePageMeta({
   middleware: "auth",
@@ -107,6 +106,7 @@ const submitTest = async () => {
 
         <div>
           <h3 class="text-lg font-medium mb-6">{{ currentQuestion?.question_text }}</h3>
+          <AppCodeBlock v-if="currentQuestion?.code" :code="currentQuestion.code" :language="currentQuestion.language" />
         </div>
 
         <div class="space-y-3">

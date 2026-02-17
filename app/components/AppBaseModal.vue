@@ -20,7 +20,7 @@ const isOpen = computed({
 
 const contentClass = computed(() => {
   const width = props.maxWidthClass ?? "max-w-2xl";
-  return `app-modal-card w-full ${width} overflow-hidden rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] shadow-2xl pointer-events-auto`;
+  return `app-modal-card w-full ${width} overflow-hidden rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] shadow-2xl pointer-events-auto max-h-[90vh] flex flex-col`;
 });
 
 const close = () => {
@@ -29,7 +29,7 @@ const close = () => {
 </script>
 
 <template>
-  <DialogRoot v-model:open="isOpen">
+  <DialogRoot v-model:open="isOpen" @interact-outside="close">
     <DialogPortal to="body">
       <DialogOverlay class="app-modal-overlay fixed inset-0 z-40 bg-black/60 backdrop-blur-[2px]" />
       <DialogContent class="app-modal-shell fixed inset-0 z-50 flex items-center justify-center px-4 py-8 pointer-events-none">
@@ -42,7 +42,7 @@ const close = () => {
           <div class="pointer-events-none absolute -bottom-28 -left-28 h-80 w-80 rounded-full bg-[#6C7CFF]/10 blur-[100px]"></div>
 
           <slot name="header" :close="close">
-            <div class="relative z-10 flex items-start justify-between gap-4 border-b border-[#262C45] px-6 py-5">
+            <div class="relative z-10 flex items-start justify-between gap-4 border-b border-[#262C45] px-6 py-5 flex-shrink-0">
               <div>
                 <DialogTitle class="text-lg font-semibold text-white">
                   {{ title }}
@@ -55,14 +55,14 @@ const close = () => {
               <DialogClose as-child>
                 <button
                   type="button"
-                  class="rounded-lg border border-[#262C45] bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10 hover:border-[#6C7CFF]/40 transition">
+                  class="rounded-lg border border-[#262C45] bg-white/5 px-3 py-2 text-sm text-white hover:bg-white/10 hover:border-[#6C7CFF]/40 transition flex-shrink-0">
                   Close
                 </button>
               </DialogClose>
             </div>
           </slot>
 
-          <div class="relative z-10 px-6 py-6">
+          <div class="relative z-10 px-6 py-6 overflow-y-auto flex-1">
             <slot />
           </div>
 
@@ -72,3 +72,23 @@ const close = () => {
     </DialogPortal>
   </DialogRoot>
 </template>
+
+<style scoped>
+/* Custom scrollbar for modal content */
+.relative.z-10::-webkit-scrollbar {
+  width: 6px;
+}
+
+.relative.z-10::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.relative.z-10::-webkit-scrollbar-thumb {
+  background: rgba(108, 124, 255, 0.3);
+  border-radius: 3px;
+}
+
+.relative.z-10::-webkit-scrollbar-thumb:hover {
+  background: rgba(108, 124, 255, 0.5);
+}
+</style>

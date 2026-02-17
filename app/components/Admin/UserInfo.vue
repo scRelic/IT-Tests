@@ -52,8 +52,8 @@ const saveRole = () => {
 </script>
 
 <template>
-  <aside class="h-full rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
-    <div class="p-5 border-b border-[#262C45] flex items-start justify-between gap-3">
+  <aside class="h-full rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] flex flex-col overflow-hidden">
+    <div class="p-5 border-b border-[#262C45] flex items-start justify-between gap-3 flex-shrink-0">
       <div>
         <p class="text-sm font-semibold">User details</p>
         <p class="text-xs text-[#9AA3C7] mt-1">Quick actions & security overview.</p>
@@ -63,7 +63,7 @@ const saveRole = () => {
       </button>
     </div>
 
-    <div class="p-5 space-y-5 overflow-y-auto max-h-[calc(100vh-80px)]">
+    <div class="p-5 space-y-5 flex-1 overflow-y-auto">
       <div class="flex items-start gap-3">
         <div
           class="h-11 w-11 rounded-2xl border border-[#262C45] bg-white/5 flex items-center justify-center font-semibold"
@@ -84,7 +84,7 @@ const saveRole = () => {
         </div>
       </div>
 
-      <div class="rounded-xl border border-[#262C45] bg-white/5 p-4 h-full">
+      <div class="rounded-xl border border-[#262C45] bg-white/5 p-4">
         <p class="text-sm font-semibold">Actions</p>
         <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 relative">
           <button
