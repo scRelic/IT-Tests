@@ -1,6 +1,6 @@
 # IT Tests Platform 🚀
 
-[cite_start]Full-stack platform for creating and passing IT tests with authentication, role-based access, progress tracking, and an advanced admin panel. [cite: 8, 9, 27]
+Full-stack platform for creating and passing IT tests with authentication, role-based access, progress tracking, and an advanced admin panel.
 
 🌐 **Live Demo:** [it-tests.buzz](https://it-tests.buzz)  
 👤 **Demo account:**
@@ -36,7 +36,7 @@
 
 ## ✨ Features
 
-- 🔐 Authentication & Roles**: JWT-based authentication with role-based access control (RBAC).
+- 🔐 Authentication & Roles**: Authentication based on nuxt-auth-utils. Creating admin and user rolesю
 - **📝 Testing System**: 
   - Full CRUD for tests and questions.
   - Server-side timer for secure test-taking.
@@ -63,7 +63,7 @@
 
 - **Nuxt SSR**: High-performance frontend with Server Side Rendering.
 - **Nitro Server**: Light and fast backend API.
-- **Middleware**: Protection of routes based on JWT and user roles.
+- **Middleware**: Protection of routes and user roles.
 
 ---
 
@@ -72,4 +72,3 @@
 1. **Clone the repository:**
    ```bash
    git clone [https://github.com/scRelic/it-tests-platform.git](https://github.com/scRelic/it-tests-platform.git)
-   cd it-tests-platform
