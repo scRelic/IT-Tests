@@ -49,7 +49,7 @@ password: demo123
 </details>
 
 <details>
-  <summary>Categories page</summary>
+  <summary>Admin panel - tests page</summary>
   
   ![Admin tests](https://github.com/user-attachments/assets/f54c0d0e-ede7-47b1-a6c5-7724ce589af5)
 </details>
