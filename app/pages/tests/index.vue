@@ -35,9 +35,21 @@ const filters = computed(() => ({
 
 const { data, pending } = useTest(filters);
 
+const { data: activeSessionData } = await useFetch("/api/me/active-test-session", {
+  key: "me-active-test-session",
+  default: () => ({ hasActiveSession: false, testId: null, testTitle: null }),
+});
+
 const tests = computed(() => data.value?.tests ?? []);
 const total = computed(() => data.value?.total ?? 0);
 const totalPages = computed(() => Math.max(1, Math.ceil(total.value / pageSize)));
+const activeSession = computed(() => {
+  if (!activeSessionData.value?.hasActiveSession || !activeSessionData.value?.testId) return null;
+  return {
+    testId: Number(activeSessionData.value.testId),
+    testTitle: activeSessionData.value.testTitle || null,
+  };
+});
 
 const nextPage = () => {
   if (page.value < totalPages.value) {
@@ -61,6 +73,20 @@ watch([category, sort], () => {
     <AppLoader v-if="pending" />
     <section v-else class="max-w-7xl mx-auto px-6 py-16">
       <h2 class="text-3xl font-semibold mb-10">Test catalog</h2>
+
+      <div
+        v-if="activeSession"
+        class="mb-6 rounded-2xl border border-yellow-600/40 bg-[#1B2033] p-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm text-[#9AA3C7]">You have an active test session</p>
+          <p class="text-base font-medium">{{ activeSession.testTitle || `Test #${activeSession.testId}` }}</p>
+        </div>
+        <NuxtLink
+          :to="`/tests/${activeSession.testId}`"
+          class="inline-flex items-center justify-center rounded-xl bg-yellow-600 px-4 py-2 text-sm font-semibold hover:bg-yellow-500 transition-colors duration-200">
+          Continue test
+        </NuxtLink>
+      </div>
 
       <div class="flex flex-wrap gap-4 mb-10">
         <FilterBlock v-model="category" :options="categoriesOptions" placeholder="Category" />
