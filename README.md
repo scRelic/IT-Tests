@@ -27,6 +27,7 @@ Full-stack platform for creating and passing IT tests with authentication, role-
   <summary>Admin Panel (Tests, Users, Management)</summary>
 
   ![Admin panel](https://github.com/user-attachments/assets/42d05fb9-fb2d-44ad-9e12-aace954d4221)
+  ---
   ![Admin tests](https://github.com/user-attachments/assets/f54c0d0e-ede7-47b1-a6c5-7724ce589af5)
   ![Admin categories](https://github.com/user-attachments/assets/e997329d-0720-49c7-a2bc-53ef308c42fe)
   ![Admin users](https://github.com/user-attachments/assets/66a454d0-8a29-4c00-b287-3d8bd22ad925)
