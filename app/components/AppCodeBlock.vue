@@ -3,6 +3,10 @@ import hljs from "highlight.js";
 import "highlight.js/styles/github-dark.css";
 import { onMounted, ref, watch } from "vue";
 
+hljs.configure({
+  ignoreUnescapedHTML: true,
+});
+
 const props = defineProps({
   code: { type: String, required: true },
   language: { type: String },
@@ -13,6 +17,7 @@ const isCopied = ref(false);
 
 const highlight = () => {
   if (codeElement.value) {
+    codeElement.value.textContent = formattedCode.value;
     codeElement.value.removeAttribute("data-highlighted");
     // eslint-disable-next-line
     // @ts-ignore - highlight.js safely handles syntax highlighting
@@ -42,6 +47,7 @@ const formattedCode = computed(() => {
 
 onMounted(highlight);
 watch(() => props.code, highlight);
+watch(() => props.language, highlight);
 </script>
 
 <template>
@@ -85,7 +91,8 @@ watch(() => props.code, highlight);
     <pre class="overflow-hidden border border-[#262C45] rounded-xl"><code 
       ref="codeElement" 
       :class="[`language-${language}`, 'custom-scroll']"
-    >{{ formattedCode }}</code></pre>
+      v-text="formattedCode"
+    ></code></pre>
   </div>
 </template>
 

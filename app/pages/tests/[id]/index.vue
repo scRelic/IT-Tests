@@ -73,7 +73,7 @@ const canProceed = computed(() => {
 const saveAnswers = async () => {
   try {
     await $fetch<{ message: string; answers: Record<number, number | null> }>("/api/tests/session/answers", {
-      method: "PATCH",
+      method: "POST",
       body: { testId: testId.value, answers: selectedAnswers, currentQuestionIndex: currentQuestionIndex.value },
     });
   } catch (error) {
