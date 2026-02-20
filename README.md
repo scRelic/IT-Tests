@@ -29,35 +29,36 @@ Full-stack platform for creating and passing IT tests with authentication, role-
   ![Admin panel](https://github.com/user-attachments/assets/42d05fb9-fb2d-44ad-9e12-aace954d4221)
   
   ---
-  ![Admin tests](https://github.com/user-attachments/assets/f54c0d0e-ede7-47b1-a6c5-7724ce589af5)
+  
+  ![Admin tests](https://github.com/user-attachments/assets/21ed07c3-45f8-42c5-a9bb-6302ca3c8ed9)
   
   ---
   
-  ![Admin categories](https://github.com/user-attachments/assets/e997329d-0720-49c7-a2bc-53ef308c42fe)
+  ![Admin categories](https://github.com/user-attachments/assets//22f8ebca-31e7-4d38-be90-11aa5fc364ed)
 
   ---
   
-  ![Admin users](https://github.com/user-attachments/assets/66a454d0-8a29-4c00-b287-3d8bd22ad925)
+  ![Admin users](https://github.com/user-attachments/assets/27baa8b7-a32d-46f3-a870-4ceca7346312)
 
   ---
   
-  ![Edit test](https://github.com/user-attachments/assets/a60b331f-285d-418d-ad72-22357ab6f195)
+  ![Edit test](https://github.com/user-attachments/assets/ea8386dc-2f3b-4d32-88cc-d977d9b5f432)
 
   ---
   
-  ![Create test](https://github.com/user-attachments/assets/2ab258ac-a62f-4154-8ee6-b8dd095b79c6)
+  ![Create test](https://github.com/user-attachments/assets/4189c5d8-1bca-448e-aa4c-b8e001144a62)
 
   ---
   
-  ![Edit category](https://github.com/user-attachments/assets/22e1be2d-0707-4154-95a1-32fa1a8922c9)
+  ![Edit category](https://github.com/user-attachments/assets/7e132452-2c95-4dea-bfe6-7effb484ca94)
 
   ---
   
-  ![Create category](https://github.com/user-attachments/assets/0644270b-0a94-41b9-abff-ac0eed5eb13c)
+  ![Create category](https://github.com/user-attachments/assets/143baf19-990a-4ebf-b499-e2c4f40bf741)
 
   ---
-  
-  ![User info](https://github.com/user-attachments/assets/087b44b4-71cb-48b7-9ed0-30cc2a414aa1)
+
+  ![User info](https://github.com/user-attachments/assets/d3b0b1ff-a7d2-4ae1-a4f3-f533ea6e8666)
 </details>
 
 ---
