@@ -12,8 +12,15 @@ password: demo123
 
 ## Screenshots
 
-### Tests page
+
+
+<details>
+  <summary>### Tests page</summary>
+
 ![Tests page](https://github.com/user-attachments/assets/98391210-1eb9-4e3c-85cb-4c024608f923)
+
+</details>
+
 
 ### Categories page
 ![Categories page](https://github.com/user-attachments/assets/17a20416-14c4-4ab9-b3bf-e625c6566c32)
