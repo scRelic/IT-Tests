@@ -4,8 +4,11 @@ import { ZodError } from 'zod'
 
 const updateProfileSchema = z
   .object({
-    name: z.string().trim().min(2).max(50).optional(),
-    email: z.string().trim().email().optional(),
+    name: z.string().trim().min(2).max(18).optional(),
+    email: z.preprocess(
+      (value) => (typeof value === 'string' ? value.trim() : value),
+      z.email().optional(),
+    ),
     birth_date: z
       .union([z.string().regex(/^\d{4}-\d{2}-\d{2}$/), z.null()])
       .optional(),

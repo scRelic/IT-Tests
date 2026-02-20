@@ -52,6 +52,19 @@ const categoryOptions = computed(() => {
   return categories.map((c) => ({ label: c.title, value: String(c.id) }));
 });
 
+const languageOptions = [
+  { label: "JavaScript", value: "javascript" },
+  { label: "TypeScript", value: "typescript" },
+  { label: "Python", value: "python" },
+  { label: "Java", value: "java" },
+  { label: "C#", value: "csharp" },
+  { label: "C++", value: "cpp" },
+  { label: "HTML", value: "html" },
+  { label: "CSS", value: "css" },
+  { label: "SQL", value: "sql" },
+  { label: "Bash", value: "bash" },
+];
+
 const isInitialized = ref(false);
 
 const normalizeAnswers = (answers: unknown) => {
@@ -81,7 +94,7 @@ const form = ref<{
     answers: Option[];
     correct_answer_id: number | null;
     code?: string | null;
-    language?: string | null;
+    language: string;
   }>;
 } | null>(null);
 
@@ -91,7 +104,7 @@ const createEmptyQuestion = (): {
   answers: Option[];
   correct_answer_id: number | null;
   code?: string | null;
-  language?: string | null;
+  language: string;
 } => {
   const baseAnswers: Option[] = [1, 2, 3, 4].map((idx) => ({
     id: idx,
@@ -315,20 +328,9 @@ const save = async () => {
             <div class="space-y-2">
               <div class="flex items-center justify-between">
                 <span class="text-xs text-[#9AA3C7]">Code snippet (optional)</span>
-                <select
-                  v-model="q.language"
-                  class="text-xs rounded-lg border border-[#262C45] bg-white/5 px-2 py-1 outline-none focus:border-[#6C7CFF] transition">
-                  <option value="javascript">JavaScript</option>
-                  <option value="typescript">TypeScript</option>
-                  <option value="python">Python</option>
-                  <option value="java">Java</option>
-                  <option value="csharp">C#</option>
-                  <option value="cpp">C++</option>
-                  <option value="html">HTML</option>
-                  <option value="css">CSS</option>
-                  <option value="sql">SQL</option>
-                  <option value="bash">Bash</option>
-                </select>
+                <div class="w-[180px]">
+                  <AppSelect v-model="q.language" :options="languageOptions" placeholder="Select language" />
+                </div>
               </div>
 
               <textarea

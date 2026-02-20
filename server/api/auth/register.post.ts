@@ -5,8 +5,8 @@ import { ZodError } from 'zod';
 
 
 const registerSchema = z.object({
-  name: z.string().min(6).max(20),
-  email: z.string().email(),
+  name: z.string().min(2).max(18),
+  email: z.email(),
   password: z.string().min(6).max(100)
 });
 
