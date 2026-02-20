@@ -7,9 +7,9 @@ await fetchUser();
   <div class="min-h-screen flex flex-col">
     <LayoutAppHeader />
     <LayoutClientSidebar />
-    <main class="flex-1">
+    <div class="flex-1">
       <slot />
-    </main>
+    </div>
     <LayoutAppFooter />
     <AppToastProvider />
   </div>

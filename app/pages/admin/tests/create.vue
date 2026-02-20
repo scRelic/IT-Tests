@@ -191,7 +191,7 @@ const save = async () => {
 </script>
 
 <template>
-  <section class="p-6 lg:p-10 max-[550px]:p-3">
+  <main class="p-6 lg:p-10 max-[550px]:p-3">
     <div class="max-w-5xl mx-auto space-y-6">
       <div v-if="categoriesPending" class="px-2 py-10 text-center text-sm text-[#9AA3C7]">Loading categories…</div>
 
@@ -348,5 +348,5 @@ const save = async () => {
         </section>
       </div>
     </div>
-  </section>
+  </main>
 </template>

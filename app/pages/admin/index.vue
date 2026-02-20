@@ -73,7 +73,6 @@ const {
     </div>
 
     <template v-else>
-      <!-- Mobile Header -->
       <div class="lg:hidden flex items-center justify-between mb-8">
         <div>
           <h1 class="text-2xl font-semibold tracking-wide">Dashboard</h1>
@@ -89,7 +88,6 @@ const {
         </button>
       </div>
 
-      <!-- Desktop Header -->
       <div class="hidden lg:flex items-center justify-between mb-8">
         <div>
           <h1 class="text-2xl font-semibold tracking-wide">Dashboard</h1>
@@ -97,7 +95,6 @@ const {
         </div>
       </div>
 
-      <!-- Stats Cards -->
       <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
         <NuxtLink
           v-for="card in cardsStats"
@@ -114,7 +111,6 @@ const {
         </NuxtLink>
       </section>
 
-      <!-- Quick Actions -->
       <section class="mb-8">
         <h2 class="text-lg font-semibold mb-4">Quick actions</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">

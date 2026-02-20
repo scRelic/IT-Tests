@@ -214,7 +214,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section class="p-6 max-[725px]:p-3">
+  <main class="p-6 max-[725px]:p-3">
     <div class="rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
       <div class="p-5 max-[725px]:p-3 border-b border-[#262C45]">
         <div class="flex flex-row max-[725px]:flex-col items-start justify-between gap-4">
@@ -379,7 +379,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-  </section>
+  </main>
 
   <Teleport to="body">
     <Transition

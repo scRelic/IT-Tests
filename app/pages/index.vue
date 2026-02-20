@@ -25,8 +25,8 @@ const {
             Online tests on Frontend, Backend, DevOps, algorithms, and databases. Suitable for interview preparation.
           </p>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mx-auto">
-            <NuxtLink to="/tests" class="btn btn-lg text-center sm:block sm:w-full py-4"> Start test </NuxtLink>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mx-auto h-10 max-[640px]:h-auto">
+            <NuxtLink to="/tests" class="btn btn-lg text-center sm:block sm:w-full"> Start test </NuxtLink>
             <NuxtLink to="/categories" class="btn secondary text-center sm:block sm:w-full flex items-center justify-center"> View Categories </NuxtLink>
           </div>
 

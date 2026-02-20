@@ -109,7 +109,7 @@ watch([sortBy, sortDir], () => {
 </script>
 
 <template>
-  <section class="p-6 max-[700px]:p-3">
+  <main class="p-6 max-[700px]:p-3">
     <div class="rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
       <div class="p-5 border-b border-[#262C45]">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
@@ -228,5 +228,5 @@ watch([sortBy, sortDir], () => {
         </template>
       </div>
     </div>
-  </section>
+  </main>
 </template>

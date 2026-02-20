@@ -60,7 +60,7 @@ const navItems = ref([
         <NuxtLink
           v-else
           to="/profile"
-          class="flex gap-2 font-mono text-sm text-slate-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/5 transition max-[550px]:hidden">
+          class="flex items-center gap-2 font-mono text-sm text-slate-300 hover:text-white px-3 py-1.5 rounded-md hover:bg-white/5 transition max-[550px]:hidden">
           <span class="text-indigo-400">$</span>
           <span>{{ user?.name ?? "User" }}</span>
           <svg class="w-3 h-3 opacity-60" viewBox="0 0 20 20" fill="currentColor">

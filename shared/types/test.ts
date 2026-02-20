@@ -5,6 +5,7 @@ export type Test = {
     category: string;
     questions: Question[];
     questions_count: number;
+    time_limit?: number;
 }
 
 export type Question = {

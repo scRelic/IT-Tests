@@ -109,7 +109,7 @@ const createCategory = async () => {
 </script>
 
 <template>
-  <div class="px-6 my-6 max-[550px]:p-3">
+  <main class="px-6 my-6 max-[550px]:p-3">
     <div class="mb-4">
       <div>
         <h1 class="text-2xl font-semibold mt-1">Create category</h1>
@@ -222,5 +222,5 @@ const createCategory = async () => {
         </div>
       </div>
     </section>
-  </div>
+  </main>
 </template>

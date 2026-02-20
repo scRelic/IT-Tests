@@ -123,7 +123,7 @@ watch(categoryFilter, () => {
 </script>
 
 <template>
-  <section class="p-6 space-y-8 max-[550px]:p-3">
+  <main class="p-6 space-y-8 max-[550px]:p-3">
     <div class="xl:col-span-2 rounded-2xl border border-[#262C45] bg-gradient-to-b from-[#1b2033] to-[#14182a] overflow-hidden">
       <div class="px-6 max-[550px]:px-2 py-5 border-b border-[#262C45] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-center gap-4">
@@ -288,5 +288,5 @@ watch(categoryFilter, () => {
         </div>
       </div>
     </div>
-  </section>
+  </main>
 </template>

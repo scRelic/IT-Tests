@@ -10,6 +10,7 @@ const { mobileOpen, closeMobile } = useSidebar();
 const navItems = computed(() => [
   { name: "Tests", link: "/tests", icon: "✓" },
   { name: "Categories", link: "/categories", icon: "#" },
+  { name: "Leaderboards", link: "/leaderboards", icon: "🏆" },
   ...(user.value?.role === "admin" ? [{ name: "Admin Panel", link: "/admin", icon: "⚙" }] : []),
 ]);
 

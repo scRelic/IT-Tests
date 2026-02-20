@@ -19,11 +19,32 @@ export default defineEventHandler(async (event) => {
     }
 
     const userId = session.user.id;
+    const testId = Number(test_id);
+
+    if (!Number.isFinite(testId) || testId <= 0) {
+      throw createError({
+        statusCode: 400,
+        message: 'Invalid test id',
+      });
+    }
+
+    const activeSession = await db.query(
+      'SELECT id, test_id FROM test_sessions WHERE user_id = $1 ORDER BY id DESC LIMIT 1',
+      [userId]
+    )
+
+    if (activeSession.rows.length === 0 || Number(activeSession.rows[0].test_id) !== testId) {
+      throw createError({
+        statusCode: 409,
+        message: 'No active session for this test. Start the test before submitting results.',
+      });
+    }
+
     let score = 0
 
     const questions = await db.query(
       'SELECT * FROM questions WHERE test_id = $1',
-      [test_id]
+      [testId]
     )
 
     const correctAnswersMap = new Map<number, number>()
@@ -50,7 +71,12 @@ export default defineEventHandler(async (event) => {
       `INSERT INTO test_results (user_id, test_id, score, total_questions, finished_at, answers)
        VALUES ($1, $2, $3, $4, NOW(), $5)
        RETURNING id`,
-      [userId, test_id, score, totalQuestions, JSON.stringify(answers)]
+      [userId, testId, score, totalQuestions, JSON.stringify(answers)]
+    )
+
+    await db.query(
+      'DELETE FROM test_sessions WHERE user_id = $1 AND test_id = $2',
+      [userId, testId]
     )
 
     let review = answers.map(ans => {
@@ -73,6 +99,10 @@ export default defineEventHandler(async (event) => {
     }
   }
   catch (error) {
+    if (error && typeof error === 'object' && 'statusCode' in error) {
+      throw error
+    }
+
     console.error('Error processing test result submission:', error)
     throw createError({
       statusCode: 500,

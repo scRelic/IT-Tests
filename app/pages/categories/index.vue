@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import type { Category } from "~~/shared/types/category";
 
 const PAGE_SIZE = 6;
@@ -90,7 +90,7 @@ const handleKeyDown = (e: KeyboardEvent) => {
           <button
             @click="handleSearch"
             :disabled="isSearching"
-            class="px-4 py-3 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed transition border border-[#262C45] bg-green-700 hover:bg-green-800 text-white text-sm flex items-center gap-2">
+            class="px-4 py-2 rounded-xl disabled:opacity-60 disabled:cursor-not-allowed text-sm flex items-center gap-2 text-indigo-400 border border-indigo-400 rounded-lg hover:bg-indigo-400 hover:text-white transition-colors">
             <span v-if="!isSearching">Search</span>
             <span v-else class="inline-block animate-spin">⟳</span>
           </button>
