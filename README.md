@@ -1,75 +1,50 @@
-# IT Tests
+# IT Tests Platform
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Full-stack platform for creating and passing IT tests with
+authentication, role-based access, progress tracking, and admin panel.
 
-## Setup
+🌐 Live Demo: https://it-tests.buzz
+👤 Demo account:
+email: demo@test.com
+password: demo123
 
-Make sure to install dependencies:
+## Screenshots
 
-```bash
-# npm
-npm install
+### User Dashboard
+![Dashboard](./docs/dashboard.png)
 
-# pnpm
-pnpm install
+### Test Passing
+![Test](./docs/test.png)
 
-# yarn
-yarn install
+### Admin Panel
+![Admin](./docs/admin.png)
 
-# bun
-bun install
-```
+## Features
+<img width="1279" height="835" alt="image" src="https://github.com/user-attachments/assets/98391210-1eb9-4e3c-85cb-4c024608f923" />
 
-## Development Server
 
-Start the development server on `http://localhost:3000`:
+## Tech Stack
 
-```bash
-# npm
-npm run dev
+Frontend:
+- Vue 3
+- Nuxt 4
+- TypeScript
+- Pinia
+- Tailwind CSS
 
-# pnpm
-pnpm dev
+Backend:
+- Node.js
+- Nitro
+- PostgreSQL
 
-# yarn
-yarn dev
+DevOps:
+- Docker
+- VPS deployment
 
-# bun
-bun run dev
-```
+- ## Architecture
 
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- Nuxt SSR frontend
+- REST API via Nitro server
+- PostgreSQL database
+- JWT authentication
+- Role-based middleware protection
