@@ -63,7 +63,7 @@ const handleLogin = async () => {
 
 <template>
   <main class="container">
-    <div class="max-w-xl mx-auto flex justify-center items-center min-h-[70vh]">
+    <div class="max-w-xl py-8 mx-auto flex justify-center items-center min-h-[70vh]">
       <div class="w-full bg-[#1B2033] border border-[#262C45] rounded-2xl p-8 shadow-xl max-[530px]:px-3">
         <h1 class="text-2xl font-semibold mb-2 text-white">Log In</h1>
         <p class="text-[#9AA3C7] mb-6 text-sm">Access your account</p>
