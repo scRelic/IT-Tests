@@ -42,7 +42,15 @@ const {
         </div>
         <div class="w-full">
           <div class="w-full aspect-[4/3] sm:aspect-[16/11] rounded-xl overflow-hidden">
-            <NuxtImg src="/images/pc_preview.png" alt="Preview" class="w-full h-full object-cover" />
+            <NuxtImg
+              src="/images/pc_preview.png"
+              alt="Preview"
+              class="w-full h-full object-cover"
+              preload
+              fetchpriority="high"
+              format="webp"
+              quality="80"
+              sizes="sm:100vw md:50vw lg:1200px" />
           </div>
         </div>
       </section>

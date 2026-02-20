@@ -6,7 +6,8 @@ export default defineNuxtConfig({
       title: 'IT Tests - your road to IT',
       meta: [
         { name: 'description', content: 'Take IT tests, improve your skills, and prepare for interviews.' }
-      ]
+      ],
+      htmlAttrs: { lang: 'en' }
     }
   },
   compatibilityDate: '2025-07-15',
@@ -32,5 +33,8 @@ export default defineNuxtConfig({
       { dir: '/data/uploads', baseURL: '/uploads' }
     ],
   },
+  image: {
+    format: ['webp'],
+  }
 
 })
