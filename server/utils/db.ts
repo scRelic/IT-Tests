@@ -17,9 +17,7 @@ const pool = new Pool({
   allowExitOnIdle: false,
 
 
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: false }
-    : false,
+  ssl: false
 });
 
 pool.on('error', (err, client) => {
