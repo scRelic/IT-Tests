@@ -30,10 +30,11 @@ Full-stack platform for creating and passing IT tests with authentication, role-
   ![Admin tests](https://github.com/user-attachments/assets/f54c0d0e-ede7-47b1-a6c5-7724ce589af5)
   ![Admin categories](https://github.com/user-attachments/assets/e997329d-0720-49c7-a2bc-53ef308c42fe)
   ![Admin users](https://github.com/user-attachments/assets/66a454d0-8a29-4c00-b287-3d8bd22ad925)
-  <img width="1051" height="1086" alt="image" src="https://github.com/user-attachments/assets/a7095022-7e21-4a9f-9d6e-f22009aa0416" />
-<img width="1089" height="1145" alt="image" src="https://github.com/user-attachments/assets/33121c4d-3e6b-42c9-90e5-3f7183dab384" />
-<img width="1586" height="766" alt="image" src="https://github.com/user-attachments/assets/7b47db94-c0a7-4a3c-a5e9-4b2c66344a0e" />
-
+  ![Edit test](https://github.com/user-attachments/assets/a60b331f-285d-418d-ad72-22357ab6f195)
+  ![Create test](https://github.com/user-attachments/assets/2ab258ac-a62f-4154-8ee6-b8dd095b79c6)
+  ![Edit category](https://github.com/user-attachments/assets/22e1be2d-0707-4154-95a1-32fa1a8922c9)
+  ![Create category](https://github.com/user-attachments/assets/0644270b-0a94-41b9-abff-ac0eed5eb13c)
+  ![User info](https://github.com/user-attachments/assets/087b44b4-71cb-48b7-9ed0-30cc2a414aa1)
 </details>
 
 ---
