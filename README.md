@@ -65,7 +65,7 @@ Full-stack platform for creating and passing IT tests with authentication, role-
 
 ## ✨ Features
 
-- 🔐 Authentication & Roles**: Authentication based on nuxt-auth-utils. Creating admin and user rolesю
+- **🔐 Authentication & Roles**: Authentication based on nuxt-auth-utils. Creating admin and user roles.
 - **📝 Testing System**: 
   - Full CRUD for tests and questions.
   - Server-side timer for secure test-taking.
