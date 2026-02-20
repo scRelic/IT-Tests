@@ -3,10 +3,11 @@
 [cite_start]Full-stack platform for creating and passing IT tests with authentication, role-based access, progress tracking, and an advanced admin panel. [cite: 8, 9, 27]
 
 🌐 **Live Demo:** [it-tests.buzz](https://it-tests.buzz)  
-👤 **Demo account:** - **Email:** `demo@test.com`  
+👤 **Demo account:**
+- **Email:** `demo@test.com`  
 - **Password:** `demo123`  
 
-[cite_start]🤖 **Telegram Web App:** [it_tests_relic_bot](https://t.me/it_tests_relic_bot) [cite: 40]
+🤖 **Telegram Web App:** [it_tests_relic_bot](https://t.me/it_tests_relic_bot)
 
 ---
 
@@ -35,26 +36,26 @@
 
 ## ✨ Features
 
-- [cite_start]**🔐 Authentication & Roles**: JWT-based authentication with role-based access control (RBAC). [cite: 28, 30]
+- 🔐 Authentication & Roles**: JWT-based authentication with role-based access control (RBAC).
 - **📝 Testing System**: 
-  - [cite_start]Full CRUD for tests and questions. [cite: 31]
-  - [cite_start]Server-side timer for secure test-taking. [cite: 33]
-  - [cite_start]Level mechanics and experience points (XP). [cite: 32]
+  - Full CRUD for tests and questions.
+  - Server-side timer for secure test-taking.
+  - Level mechanics and experience points (XP).
 - **👨‍💻 User Experience**: 
-  - [cite_start]Personal dashboard with stats and progress tracking. [cite: 32]
-  - [cite_start]Responsive design via Tailwind CSS. [cite: 36]
-  - [cite_start]Form validation with Zod/Yup. [cite: 37]
-- [cite_start]**🛠 Admin Management**: Comprehensive panel to manage users, test content, and categories. [cite: 34]
-- [cite_start]**📲 Telegram Integration**: Seamless usage as a Telegram Mini App. [cite: 40]
+  - Personal dashboard with stats and progress tracking.
+  - Responsive design via Tailwind CSS.
+  - Form validation with Zod/Yup.
+- **🛠 Admin Management**: Comprehensive panel to manage users, test content, and categories.
+- **📲 Telegram Integration**: Seamless usage as a Telegram Mini App.
 
 ---
 
 ## 🛠 Tech Stack
 
-- [cite_start]**Frontend**: Vue 3, Nuxt 4, TypeScript, Pinia, Tailwind CSS. [cite: 13, 28]
-- [cite_start]**Backend**: Node.js, Nitro, REST API. [cite: 14, 28, 30]
-- [cite_start]**Database**: PostgreSQL. [cite: 28, 35]
-- [cite_start]**DevOps**: Docker, VPS Deployment. [cite: 39]
+- **Frontend**: Vue 3, Nuxt 4, TypeScript, Pinia, Tailwind CSS.
+- **Backend**: Node.js, Nitro, REST API.
+- **Database**: PostgreSQL.
+- **DevOps**: Docker, VPS Deployment.
 
 ---
 
