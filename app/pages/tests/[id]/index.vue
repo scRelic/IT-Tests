@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, watch } from "vue";
+import { ref, reactive, computed, watch, onBeforeUnmount } from "vue";
 import type { Test, Question } from "@/../shared/types/test";
 
 definePageMeta({
@@ -81,7 +81,7 @@ const saveAnswers = async () => {
   }
 };
 
-let saveTimeout: NodeJS.Timeout | null = null;
+let saveTimeout: ReturnType<typeof setTimeout> | null = null;
 const debouncedSave = () => {
   if (saveTimeout) clearTimeout(saveTimeout);
   saveTimeout = setTimeout(saveAnswers, 1000);
@@ -151,20 +151,31 @@ onBeforeMount(async () => {
       body: { test_id: route.params.id },
     });
 
-    const response = await $fetch<{ answers: Record<number, number | null>; currentQuestionIndex: number }>("/api/tests/session/answers", {
-      method: "GET",
-      query: { testId: testId.value },
-    });
+    try {
+      const response = await $fetch<{ answers: Record<number, number | null>; currentQuestionIndex: number }>("/api/tests/session/answers", {
+        method: "GET",
+        query: { testId: testId.value },
+      });
 
-    if (response.answers && typeof response.answers === "object") {
-      Object.assign(selectedAnswers, response.answers);
-    }
+      if (response?.answers && typeof response.answers === "object") {
+        Object.assign(selectedAnswers, response.answers);
+      }
 
-    if (typeof response.currentQuestionIndex === "number" && response.currentQuestionIndex >= 0) {
-      currentQuestionIndex.value = response.currentQuestionIndex;
+      if (typeof response?.currentQuestionIndex === "number" && response.currentQuestionIndex >= 0) {
+        currentQuestionIndex.value = response.currentQuestionIndex;
+      }
+    } catch (error: any) {
+      console.warn("Could not load saved answers, starting fresh:", error);
     }
   } catch (error: any) {
     console.error("Error starting test session:", error);
+  }
+});
+
+onBeforeUnmount(() => {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    saveTimeout = null;
   }
 });
 </script>

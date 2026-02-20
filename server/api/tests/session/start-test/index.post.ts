@@ -46,8 +46,8 @@ export default defineEventHandler(async (event) => {
     }
 
     const result = await db.query(
-      'INSERT INTO test_sessions (user_id, test_id) VALUES ($1, $2) RETURNING id, user_id, test_id',
-      [userId, testId]
+      'INSERT INTO test_sessions (user_id, test_id, answers) VALUES ($1, $2, $3) RETURNING id, user_id, test_id',
+      [userId, testId, JSON.stringify({ answers: {}, currentQuestionIndex: 0 })]
     );
 
     return {

@@ -32,7 +32,21 @@ export default defineEventHandler(async (event) => {
             return { answers: {}, currentQuestionIndex: 0 };
         }
 
-        const sessionData = result.rows[0].answers || {};
+        const raw = result.rows[0].answers;
+        let sessionData: any = {};
+
+        if (raw) {
+            if (typeof raw === 'string') {
+                try {
+                    sessionData = JSON.parse(raw);
+                } catch {
+                    sessionData = {};
+                }
+            } else if (typeof raw === 'object') {
+                sessionData = raw;
+            }
+        }
+
         const answers = (sessionData.answers as Record<number, number | null>) || {};
         const currentQuestionIndex = (sessionData.currentQuestionIndex as number) || 0;
 

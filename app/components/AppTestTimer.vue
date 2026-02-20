@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
 interface Props {
   testId: number;
@@ -11,6 +11,7 @@ const emit = defineEmits<{ expired: [] }>();
 const remainingTime = ref(0);
 const isExpired = ref(false);
 const timeLimit = ref(0);
+let interval: ReturnType<typeof setInterval> | null = null;
 
 const formattedTime = computed(() => {
   if (timeLimit.value === 0) return "No limit";
@@ -57,7 +58,7 @@ const fetchTimerData = async () => {
 onMounted(() => {
   fetchTimerData();
 
-  const interval = setInterval(() => {
+  interval = setInterval(() => {
     if (timeLimit.value === 0) return;
 
     remainingTime.value = Math.max(0, remainingTime.value - 1000);
@@ -65,13 +66,19 @@ onMounted(() => {
     if (remainingTime.value === 0 && !isExpired.value) {
       isExpired.value = true;
       emit("expired");
-      clearInterval(interval);
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
     }
   }, 1000);
+});
 
-  onBeforeUnmount(() => {
+onBeforeUnmount(() => {
+  if (interval) {
     clearInterval(interval);
-  });
+    interval = null;
+  }
 });
 </script>
 

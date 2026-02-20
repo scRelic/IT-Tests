@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 
 const filterOptions = [
   { value: "All time", label: "All time" },
@@ -14,7 +14,6 @@ const {
   data: leaderboardData,
   pending: isLoading,
   error,
-  refresh,
 } = useFetch("/api/leaderboards", {
   method: "GET",
   query: computed(() => ({ filter: filter.value })),
@@ -25,8 +24,6 @@ const topThree = computed(() => leaderboardData.value.slice(0, 3));
 const restLeaderboard = computed(() => leaderboardData.value.slice(3));
 
 const getInitial = (name?: string) => name?.charAt(0)?.toUpperCase() ?? "?";
-
-watch(filter, () => refresh());
 </script>
 
 <template>
@@ -37,7 +34,7 @@ watch(filter, () => refresh());
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-3xl font-semibold mb-2">Top Users</h2>
 
-        <FilterBlock v-model="filter" :options="filterOptions" placeholder="Filter" />
+        <FilterBlock v-model="filter" :options="filterOptions" placeholder="Sort" />
       </div>
 
       <div class="grid md:grid-cols-3 gap-4 mb-8">
