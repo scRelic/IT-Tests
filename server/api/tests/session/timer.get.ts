@@ -20,14 +20,15 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        const result = await db.query(
+        const result = await db.query<any>(
             `SELECT ts.id, ts.start_time, t.time_limit 
-       FROM test_sessions ts
-       JOIN tests t ON ts.test_id = t.id
-       WHERE ts.user_id = $1 AND ts.test_id = $2 
-       ORDER BY ts.id DESC LIMIT 1`,
+     FROM test_sessions ts
+     JOIN tests t ON ts.test_id = t.id
+     WHERE ts.user_id = $1 AND ts.test_id = $2 
+     ORDER BY ts.id DESC LIMIT 1`,
             [userId, testIdNum]
         );
+
 
         if (result.rows.length === 0) {
             throw createError({
@@ -36,7 +37,7 @@ export default defineEventHandler(async (event) => {
             });
         }
 
-        const session_data = result.rows[0] as { id: number; start_time: string; time_limit: number | null };
+        const session_data = result.rows[0];
         const startTime = new Date(session_data.start_time).getTime();
         const timeLimit = (session_data.time_limit || 0) * 60 * 1000;
         const currentTime = Date.now();
