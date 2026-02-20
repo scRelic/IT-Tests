@@ -50,7 +50,8 @@ const getInitial = (name?: string) => name?.charAt(0)?.toUpperCase() ?? "?";
           <div class="flex items-center gap-4">
             <span class="text-slate-500 w-6">{{ index + 4 }}</span>
             <div class="w-9 h-9 rounded-full bg-indigo-500/20 flex items-center justify-center text-sm font-semibold text-indigo-300">
-              {{ getInitial(user.name) }}
+              <img v-if="user?.avatar_url" :src="user.avatar_url" alt="Avatar" class="h-full w-full object-cover rounded-full" />
+              <span v-else>{{ getInitial(user.name) }}</span>
             </div>
             <div>
               <div class="text-sm font-medium">{{ user.name }}</div>
