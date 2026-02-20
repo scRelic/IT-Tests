@@ -56,6 +56,7 @@ const form = ref<{
   title: string;
   description: string;
   categoryId: string;
+  timeLimit: string;
   questions: Array<{
     id: number;
     question_text: string;
@@ -68,6 +69,7 @@ const form = ref<{
   title: "",
   description: "",
   categoryId: "",
+  timeLimit: "0",
   questions: [createEmptyQuestion()],
 });
 
@@ -95,6 +97,12 @@ const isFormValid = computed(() => {
   if (!form.value.questions || form.value.questions.length === 0) return false;
 
   if (!form.value.title.trim()) return false;
+
+  const parsedCategoryId = Number(form.value.categoryId);
+  if (!Number.isInteger(parsedCategoryId) || parsedCategoryId <= 0) return false;
+
+  const parsedTimeLimit = Number(form.value.timeLimit);
+  if (!Number.isInteger(parsedTimeLimit) || parsedTimeLimit < 0) return false;
 
   for (const q of form.value.questions) {
     if (!q.question_text.trim()) return false;
@@ -170,6 +178,7 @@ const save = async () => {
         title: form.value.title,
         description: form.value.description,
         category_id: form.value.categoryId ? Number(form.value.categoryId) : null,
+        time_limit: Number(form.value.timeLimit),
         questions: form.value.questions.map((q) => ({
           question_text: q.question_text,
           answers: q.answers,
@@ -213,7 +222,7 @@ const save = async () => {
         </div>
 
         <div v-if="form" class="rounded-2xl border border-[#262C45] bg-[#1B2033] p-4 space-y-4">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
             <label class="space-y-1">
               <span class="text-xs text-[#9AA3C7]">Title</span>
               <input
@@ -225,6 +234,17 @@ const save = async () => {
             <label class="space-y-1 inline-block">
               <span class="text-xs text-[#9AA3C7]">Category</span>
               <AppSelect v-model="form.categoryId" :options="categoryOptions" placeholder="Select category" />
+            </label>
+
+            <label class="space-y-1">
+              <span class="text-xs text-[#9AA3C7]">Timer (minutes)</span>
+              <input
+                v-model="form.timeLimit"
+                type="number"
+                min="0"
+                step="1"
+                class="w-full rounded-xl border border-[#262C45] bg-white/5 px-3 py-3 text-sm outline-none placeholder:text-white/20 focus:border-[#6C7CFF] focus:ring-2 focus:ring-[#6C7CFF]/20 transition"
+                placeholder="0 = no limit" />
             </label>
           </div>
 

@@ -19,6 +19,7 @@ type BodyInput = {
     title: string;
     description?: string;
     category_id: number | null;
+    time_limit?: number;
     questions: QuestionInput[];
 };
 
@@ -39,14 +40,19 @@ export default defineEventHandler(async (event) => {
     const title = body.title;
     const description = typeof body.description === "string" ? body.description : "";
     const categoryId = body.category_id;
+    const timeLimit = Number(body.time_limit ?? 0);
     const questions = Array.isArray(body.questions) ? body.questions : [];
 
     if (!isNonEmptyString(title)) {
         throw createError({ statusCode: 400, message: "Title is required" });
     }
 
-    if (!(categoryId === null || (Number.isInteger(categoryId) && categoryId > 0))) {
+    if (!(typeof categoryId === "number" && Number.isInteger(categoryId) && categoryId > 0)) {
         throw createError({ statusCode: 400, message: "Invalid category_id" });
+    }
+
+    if (!Number.isInteger(timeLimit) || timeLimit < 0) {
+        throw createError({ statusCode: 400, message: "Invalid time_limit" });
     }
 
     if (!Array.isArray(questions) || questions.length === 0) {
@@ -105,10 +111,10 @@ export default defineEventHandler(async (event) => {
         await client.query("BEGIN");
 
         const createdTest = await client.query(
-            `INSERT INTO tests (title, description, category_id)
-       VALUES ($1, $2, $3)
+            `INSERT INTO tests (title, description, category_id, time_limit)
+          VALUES ($1, $2, $3, $4)
        RETURNING id;`,
-            [title.trim(), description, categoryId],
+            [title.trim(), description, categoryId, timeLimit],
         );
 
         if (createdTest.rowCount === 0) {

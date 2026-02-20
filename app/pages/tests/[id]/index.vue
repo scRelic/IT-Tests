@@ -41,6 +41,7 @@ const questions = computed<Question[]>(() => testData.value?.questions ?? []);
 
 const visibleResults = ref(false);
 const currentQuestionIndex = ref(0);
+const isFinalizing = ref(false);
 
 const currentQuestion = computed<Question | null>(() => {
   return questions.value[currentQuestionIndex.value] || null;
@@ -76,19 +77,33 @@ const saveAnswers = async () => {
       method: "POST",
       body: { testId: testId.value, answers: selectedAnswers, currentQuestionIndex: currentQuestionIndex.value },
     });
-  } catch (error) {
+  } catch (error: any) {
+    const statusCode = Number(error?.statusCode ?? error?.response?.status ?? 0);
+    if (statusCode === 404) {
+      return;
+    }
     console.error("Error saving answers:", error);
   }
 };
 
 let saveTimeout: ReturnType<typeof setTimeout> | null = null;
 const debouncedSave = () => {
+  if (visibleResults.value || isFinalizing.value) return;
   if (saveTimeout) clearTimeout(saveTimeout);
   saveTimeout = setTimeout(saveAnswers, 1000);
 };
 
+const clearSaveTimeout = () => {
+  if (saveTimeout) {
+    clearTimeout(saveTimeout);
+    saveTimeout = null;
+  }
+};
+
 const submitTest = async () => {
   try {
+    isFinalizing.value = true;
+    clearSaveTimeout();
     await saveAnswers();
 
     payload.value = questions.value.map((q) => ({
@@ -107,11 +122,15 @@ const submitTest = async () => {
     expUp("complete_test");
   } catch (error: unknown) {
     console.error("Error submitting test:", error);
+  } finally {
+    isFinalizing.value = false;
   }
 };
 
 const handleTimerExpired = async () => {
   try {
+    isFinalizing.value = true;
+    clearSaveTimeout();
     await saveAnswers();
 
     payload.value = questions.value.map((q) => ({
@@ -129,6 +148,8 @@ const handleTimerExpired = async () => {
   } catch (error) {
     console.error("Error submitting test due to timer expiry:", error);
     await navigateTo("/tests");
+  } finally {
+    isFinalizing.value = false;
   }
 };
 
@@ -173,10 +194,7 @@ onBeforeMount(async () => {
 });
 
 onBeforeUnmount(() => {
-  if (saveTimeout) {
-    clearTimeout(saveTimeout);
-    saveTimeout = null;
-  }
+  clearSaveTimeout();
 });
 </script>
 

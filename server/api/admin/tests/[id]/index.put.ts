@@ -19,6 +19,7 @@ type BodyInput = {
     title: string;
     description?: string;
     category_id: number | null;
+    time_limit?: number;
     questions: QuestionInput[];
 };
 
@@ -46,6 +47,7 @@ export default defineEventHandler(async (event) => {
     const title = body.title;
     const description = typeof body.description === "string" ? body.description : "";
     const categoryId = body.category_id;
+    const timeLimit = Number(body.time_limit ?? 0);
     const questions = Array.isArray(body.questions) ? body.questions : [];
 
     if (!isNonEmptyString(title)) {
@@ -54,6 +56,10 @@ export default defineEventHandler(async (event) => {
 
     if (!(categoryId === null || (Number.isInteger(categoryId) && categoryId > 0))) {
         throw createError({ statusCode: 400, message: "Invalid category_id" });
+    }
+
+    if (!Number.isInteger(timeLimit) || timeLimit < 0) {
+        throw createError({ statusCode: 400, message: "Invalid time_limit" });
     }
 
     if (!Array.isArray(questions) || questions.length === 0) {
@@ -119,10 +125,11 @@ export default defineEventHandler(async (event) => {
             `UPDATE tests
        SET title = $1,
            description = $2,
-           category_id = $3
-       WHERE id = $4
+           category_id = $3,
+           time_limit = $4
+       WHERE id = $5
        RETURNING id;`,
-            [title.trim(), description, categoryId, testId]
+            [title.trim(), description, categoryId, timeLimit, testId]
         );
 
         if (updatedTest.rowCount === 0) {
