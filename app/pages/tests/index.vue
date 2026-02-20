@@ -1,6 +1,13 @@
 <script setup>
 import { ref, computed, watch } from "vue";
 
+useSeoMeta({
+  title: "Tests Catalog",
+  ogTitle: "Tests Catalog",
+  description: "Browse and take IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 const route = useRoute();
 
 const category = ref(route.query.category || "All");

@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { formatDateTime } from "~~/shared/utils";
 import type { Category } from "~~/shared/types/category";
+
+useSeoMeta({
+  title: "Admin Tests Catalog",
+  ogTitle: "Admin Tests Catalog",
+  description: "Browse and manage IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
 
 definePageMeta({
   layout: "admin",

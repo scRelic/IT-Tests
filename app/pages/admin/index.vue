@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
+useSeoMeta({
+  title: "Admin Dashboard",
+  ogTitle: "Admin Dashboard",
+  description: "Manage tests, questions, categories, and users.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 definePageMeta({
   layout: "admin",
   middleware: ["auth"],

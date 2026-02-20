@@ -3,6 +3,13 @@ import { computed, ref } from "vue";
 import type { EditProfileData } from "~~/shared/types/user";
 import type { LastTests } from "~~/shared/types/test";
 
+useSeoMeta({
+  title: "Profile",
+  ogTitle: "Profile",
+  description: "Browse and take IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 definePageMeta({ middleware: "auth" });
 
 const { user, pending, fetchUser } = useUser();

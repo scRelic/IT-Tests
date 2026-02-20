@@ -2,6 +2,13 @@
 import { object, ref as yupRef, string } from "yup";
 import { ref } from "vue";
 
+useSeoMeta({
+  title: "Login",
+  ogTitle: "Login",
+  description: "Access your account to take IT tests and improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 definePageMeta({
   layout: "auth",
 });

@@ -2,6 +2,13 @@
 import { computed, ref } from "vue";
 import type { Category } from "~~/shared/types/category";
 
+useSeoMeta({
+  title: "Categories Catalog",
+  ogTitle: "Categories Catalog",
+  description: "Browse and take IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 const PAGE_SIZE = 6;
 
 const searchInput = ref("");

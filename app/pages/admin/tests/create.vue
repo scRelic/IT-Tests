@@ -3,6 +3,13 @@ import { computed, ref } from "vue";
 import type { Option } from "~~/shared/types/test";
 import type { Category } from "~~/shared/types/category";
 
+useSeoMeta({
+  title: "Admin Tests Create",
+  ogTitle: "Admin Tests Create",
+  description: "Create and manage IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 type CategoriesResponse = {
   categories: Category[];
   total: number;

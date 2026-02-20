@@ -2,6 +2,13 @@
 import { ref } from "vue";
 import { object, string, array } from "yup";
 
+useSeoMeta({
+  title: "Admin Categories Edit",
+  ogTitle: "Admin Categories Edit",
+  description: "Edit and manage IT categories to improve your skills.",
+  ogDescription: "A platform with interactive categories for developers.",
+});
+
 definePageMeta({
   layout: "admin",
   middleware: ["auth"],

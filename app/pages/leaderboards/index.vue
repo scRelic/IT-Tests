@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
+useSeoMeta({
+  title: "Leaderboards",
+  ogTitle: "Leaderboards",
+  description: "Browse and take IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 const filterOptions = [
   { value: "All time", label: "All time" },
   { value: "This month", label: "This month" },

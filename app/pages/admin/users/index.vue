@@ -3,6 +3,13 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { formatDateDdMmYy } from "~~/shared/utils";
 import type { User } from "~~/shared/types/user";
 
+useSeoMeta({
+  title: "Admin Users Catalog",
+  ogTitle: "Admin Users Catalog",
+  description: "Browse and manage IT users to improve your skills.",
+  ogDescription: "A platform with interactive users for developers.",
+});
+
 definePageMeta({
   layout: "admin",
   middleware: ["auth"],

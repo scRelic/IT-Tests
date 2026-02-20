@@ -3,6 +3,13 @@ import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { formatDateTime } from "~~/shared/utils";
 import type { Category } from "~~/shared/types/category";
 
+useSeoMeta({
+  title: "Admin Categories Catalog",
+  ogTitle: "Admin Categories Catalog",
+  description: "Browse and manage IT categories to improve your skills.",
+  ogDescription: "A platform with interactive categories for developers.",
+});
+
 definePageMeta({
   layout: "admin",
   middleware: ["auth"],

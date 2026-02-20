@@ -3,6 +3,13 @@ import { computed, ref, watch } from "vue";
 import type { Option, Question } from "~~/shared/types/test";
 import type { Category } from "~~/shared/types/category";
 
+useSeoMeta({
+  title: "Admin Tests Edit",
+  ogTitle: "Admin Tests Edit",
+  description: "Edit and manage IT tests to improve your skills.",
+  ogDescription: "A platform with interactive tests for developers.",
+});
+
 type TestResponse = {
   test: {
     id: number;
